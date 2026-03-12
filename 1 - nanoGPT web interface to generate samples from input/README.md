@@ -21,7 +21,7 @@ pip install flask torch tiktoken
 ```
 
 <br />
-<b>Put app.py file where sample.py, train.py is, i.e. MAIN folder.</b>
+<b>Put app.py file ( and templates folder with index.html ) where sample.py, train.py is, i.e. MAIN folder.</b>
 <br /><br />
 Example of launching a web service for samples
 
