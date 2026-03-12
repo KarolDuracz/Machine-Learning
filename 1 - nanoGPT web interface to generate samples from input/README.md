@@ -4,7 +4,7 @@ MLP from 2003, and subsequent evolutions, including Transformer from 2017, i.e. 
 This demo creates a web interface that communicates with the sample.py script from the repo https://github.com/karpathy/nanoGPT . Instead of using the CMD console with sample.py script, user can send queries from the web. Secondly, what interests me most is generating N samples for a given input (context), e.g., the phrase "To be, or not to be"
 <br /><br />
 After training, as Andrej describes in the nanoGPT repo readme, the instruction says that you first run prepare.py, then "python train.py config/train_shakespeare_char.py", for this dataset (https://raw.githubusercontent.com/karpathy/char-rnn/refs/heads/master/data/tinyshakespeare/input.txt
-) the files needed for sample.py are created. meta.pkl and ckpt.pt. After the training phase, after the default 5000 interactions they are under these paths.
+) . Files needed for sample.py are created -> meta.pkl and ckpt.pt. After the training phase, after the default 5000 iterations they are under these paths.
 <br /><br />
 
 ```
@@ -20,6 +20,9 @@ I've only included 3 files here because you need app.py to run this. The demos b
 pip install flask torch tiktoken
 ```
 
+<br />
+<b>Put app.py file where sample.py, train.py is, i.e. MAIN folder.</b>
+<br /><br />
 Example of launching a web service for samples
 
 ```
