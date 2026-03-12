@@ -24,15 +24,16 @@ pip install flask torch tiktoken
 <b>Put app.py file ( and templates folder with index.html ) where sample.py, train.py is, i.e. MAIN folder.</b>
 <br /><br />
 Example of launching a web service for samples
+<br /><br />
 
 ```
-python app.py --out_dir=out-shakespear-char--device=cpu --port=5000
+python app.py --out_dir=out-shakespear-char --device=cpu --port=5000
 ```
 
 This is what you see in the terminal. Then open a browser at http://localhost:5000 
 
 ```
-python app.py --out_dir=out-shakespear-char--device=cpu --port=5000
+python app.py --out_dir=out-shakespear-char --device=cpu --port=5000
 Loading model... (this may take a while)
 number of parameters: 10.65M
 Loading meta from data\shakespeare_char\meta.pkl...
@@ -54,6 +55,7 @@ It looks just like the picture. Type the phrase in window on the left and press 
 
 <br />
 <b>DEMO 1 - sample_list_3.py script to run in console - example of action</b>
+
 ```
 python sample_list_3.py --out_dir=out-shakespear-char --device=cpu
 ```
