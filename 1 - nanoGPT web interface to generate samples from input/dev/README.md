@@ -1,4 +1,4 @@
-<h3>TODO - several metrics are needed to measure errors in prediction length etc.</h3>
+<h3>TODO - several metrics are needed to measure errors in prediction sequence  (length) etc.</h3>
 The default script that trains a model of 10.67M parameters has a context of 256 tokens https://github.com/karpathy/nanoGPT/blob/master/config/train_shakespeare_char.py#L19
 <br /><br />
 Tiny Shakespeare is ok, but what if you change the input.txt which is created after running prepare.py here https://github.com/karpathy/nanoGPT/tree/master/data/shakespeare_char
