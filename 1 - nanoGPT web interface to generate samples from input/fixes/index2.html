@@ -1,0 +1,357 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>GPT Sampler — Web Demo (streaming)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin: 0; padding: 0; height: 100vh; display: flex; }
+    .col { padding: 16px; box-sizing: border-box; }
+    .left { width: 36%; border-right: 1px solid #ddd; display:flex; flex-direction:column; }
+    .right { flex: 1; overflow: auto; display:flex; flex-direction:column; }
+    textarea { width: 100%; height: 160px; font-family: monospace; font-size: 14px; padding: 8px; box-sizing:border-box; }
+    .controls { margin-top: 8px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .controls input[type=number], .controls input[type=text], .controls select { width: 90px; padding:6px; }
+    button { padding:8px 12px; cursor:pointer; }
+    .output { white-space: pre-wrap; font-family: monospace; padding: 12px; overflow:auto; flex:1; }
+    .row { margin-bottom: 12px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
+    .label { font-size: 12px; color:#666; margin-bottom:6px; display:block; }
+    .spinner { display:inline-block; width:14px; height:14px; border:2px solid #ccc; border-top-color:#333; border-radius:50%; animation:spin 1s linear infinite; vertical-align:middle; margin-left:8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Left log area */
+    #log { margin-top:12px; background:#fafafa; border:1px solid #eee; padding:8px; height:40vh; overflow:auto; font-family: monospace; font-size:13px; white-space:pre-wrap; }
+
+    /* Right: per-line panels for token mode */
+    .line-panel { border:1px solid #eee; padding:8px; margin-bottom:8px; background:#fff; }
+    .line-title { font-weight:600; margin-bottom:6px; }
+    .sample { padding:6px; border-radius:4px; margin-bottom:4px; background:#f7f7f7; font-family: monospace; }
+    .meta { font-size:12px; color:#666; margin-top:6px; }
+  </style>
+</head>
+<body>
+  <div class="col left">
+    <h2>Input</h2>
+    <textarea id="prompt" placeholder="Type a prompt and press Generate...">To be, or not to be</textarea>
+
+    <div class="controls" style="align-items:center;">
+      <label class="label">Mode
+        <select id="mode">
+          <option value="batch">batch (blocking)</option>
+          <option value="line">line (stream)</option>
+          <option value="token" selected>token (stream)</option>
+        </select>
+      </label>
+
+      <label class="label">Lines <input id="lines" type="number" value="5" min="1" /></label>
+      <label class="label">Samples <input id="samples" type="number" value="5" min="1" /></label>
+      <label class="label">Tokens <input id="tokens" type="number" value="30" min="1" /></label>
+      <label class="label">Temp <input id="temperature" type="text" value="0.8" /></label>
+      <label class="label">Top-k <input id="top_k" type="number" value="200" min="1" /></label>
+    </div>
+
+    <div style="margin-top:12px;">
+      <button id="generate">Generate</button>
+      <button id="stop" disabled style="margin-left:8px;">Stop</button>
+      <span id="status" style="margin-left:12px"></span>
+    </div>
+
+    <div id="log" aria-live="polite"></div>
+  </div>
+
+  <div class="col right">
+    <h2>Generated output</h2>
+    <div id="output" class="output"></div>
+  </div>
+
+<script>
+(() => {
+  const genBtn = document.getElementById('generate');
+  const stopBtn = document.getElementById('stop');
+  const statusEl = document.getElementById('status');
+  const out = document.getElementById('output');
+  const logEl = document.getElementById('log');
+
+  let controller = null; // AbortController for streaming fetch
+  let streaming = false;
+
+  function log(msg) {
+    const t = new Date().toLocaleTimeString();
+    logEl.innerText = `[${t}] ${msg}\n` + logEl.innerText;
+  }
+
+  function clearOutput() {
+    out.innerHTML = "";
+  }
+
+  function setRunning(isRunning) {
+    streaming = !!isRunning;
+    genBtn.disabled = isRunning;
+    stopBtn.disabled = !isRunning;
+    if (isRunning) {
+      statusEl.innerHTML = 'Running <span class="spinner"></span>';
+    } else {
+      statusEl.innerText = '';
+    }
+  }
+
+  // Create or return a container for a given line index (for token mode)
+  function ensureLinePanel(lineIdx) {
+    let id = `line-panel-${lineIdx}`;
+    let panel = document.getElementById(id);
+    if (panel) return panel;
+    panel = document.createElement('div');
+    panel.className = 'line-panel';
+    panel.id = id;
+    const title = document.createElement('div');
+    title.className = 'line-title';
+    title.innerText = `Line ${lineIdx + 1}`;
+    panel.appendChild(title);
+    // placeholder for samples
+    const samplesContainer = document.createElement('div');
+    samplesContainer.className = 'samples';
+    samplesContainer.id = `${id}-samples`;
+    panel.appendChild(samplesContainer);
+    out.appendChild(panel);
+    return panel;
+  }
+
+  function updateSamplesForLine(lineIdx, partials, prompt) {
+    const panel = ensureLinePanel(lineIdx);
+    const samplesContainer = panel.querySelector('.samples');
+    // ensure sample elements
+    while (samplesContainer.children.length < partials.length) {
+      const s = document.createElement('div');
+      s.className = 'sample';
+      s.innerText = ''; // will be filled
+      samplesContainer.appendChild(s);
+    }
+    for (let i = 0; i < partials.length; i++) {
+      const sEl = samplesContainer.children[i];
+      // partials are decoded new tokens only; show prompt + partial
+      sEl.innerText = (prompt || "") + partials[i];
+    }
+  }
+
+  function appendLineText(lineText, lineIdx) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'row';
+    const title = document.createElement('div');
+    title.className = 'line-title';
+    title.innerText = `Line ${lineIdx + 1}`;
+    wrapper.appendChild(title);
+    const pre = document.createElement('div');
+    pre.style.whiteSpace = 'pre-wrap';
+    pre.style.fontFamily = 'monospace';
+    pre.innerText = lineText;
+    wrapper.appendChild(pre);
+    out.appendChild(wrapper);
+    // scroll to bottom
+    out.scrollTop = out.scrollHeight;
+  }
+
+  function parseSSEChunks(buffer) {
+    // buffer: string that may contain 0..n complete SSE frames separated by "\n\n"
+    // returns { frames: [jsonStr...], remainder: "..." }
+    const parts = buffer.split("\n\n");
+    const remainder = parts.pop();
+    const frames = [];
+    for (const p of parts) {
+      if (!p.trim()) continue;
+      // combine lines beginning with "data:" (strip leading "data: ")
+      const lines = p.split("\n").map(l => l.replace(/^data:\s?/, ''));
+      const jsonStr = lines.join("\n");
+      frames.push(jsonStr);
+    }
+    return { frames, remainder };
+  }
+
+  async function startStreamRequest(payload) {
+    clearOutput();
+    log("Starting generation (mode=" + payload.mode + ")");
+    setRunning(true);
+    controller = new AbortController();
+    const signal = controller.signal;
+
+    if (payload.mode === 'batch') {
+      // simple blocking POST that returns final JSON
+      try {
+        const resp = await fetch('/api/generate', {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          signal
+        });
+        const json = await resp.json();
+        if (!resp.ok) {
+          log("Server error: " + (json.error || resp.statusText));
+          out.innerText = "Error: " + (json.error || resp.statusText);
+          setRunning(false);
+          return;
+        }
+        // display lines
+        out.innerText = "";
+        json.results.forEach((line, idx) => {
+          out.innerText += `Line ${idx+1}:\n${line}\n\n`;
+        });
+        log("Batch generation finished.");
+        setRunning(false);
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          log("Generation aborted by user.");
+        } else {
+          log("Generation failed: " + err.toString());
+          out.innerText = "Request failed: " + err.toString();
+        }
+        setRunning(false);
+      }
+      return;
+    }
+
+    // streaming mode: POST and read response body
+    try {
+      const resp = await fetch('/api/generate', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal
+      });
+      if (!resp.ok) {
+        const txt = await resp.text();
+        log("Server returned error: " + txt);
+        out.innerText = "Server error: " + txt;
+        setRunning(false);
+        return;
+      }
+
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = "";
+
+      // For token mode we also want to show the prompt in each sample panel
+      const promptText = payload.prompt || "";
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const parsed = parseSSEChunks(buf);
+        buf = parsed.remainder;
+        for (const frm of parsed.frames) {
+          let msg = null;
+          try {
+            msg = JSON.parse(frm);
+          } catch (e) {
+            console.warn("Failed to parse frame as JSON:", frm, e);
+            continue;
+          }
+          handleServerMessage(msg, promptText);
+        }
+      }
+
+      // leftover
+      if (buf.trim()) {
+        try {
+          const msg = JSON.parse(buf.replace(/^data:\s?/, ''));
+          handleServerMessage(msg, promptText);
+        } catch (e) {
+          // ignore
+        }
+      }
+
+      setRunning(false);
+      log("Stream closed by server.");
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        log("Generation aborted by user.");
+      } else {
+        log("Streaming failed: " + err.toString());
+        out.innerText = "Streaming failed: " + err.toString();
+      }
+      setRunning(false);
+    }
+  }
+
+  function handleServerMessage(msg, promptText) {
+    if (!msg || !msg.type) return;
+    if (msg.type === 'log') {
+      log(msg.msg || JSON.stringify(msg));
+      // optionally update small status
+      if (msg.progress) {
+        statusEl.title = JSON.stringify(msg.progress);
+      }
+    } else if (msg.type === 'token') {
+      // partials array for that line
+      const lineIdx = msg.line_idx || 0;
+      const partials = msg.partials || [];
+      // update or create a line panel and update sample texts
+      updateSamplesForLine(lineIdx, partials, promptText);
+      // progress update in log
+      if (msg.progress) {
+        log(`Line ${lineIdx+1} token ${msg.progress.step_in_line}/${msg.progress.steps_total}`);
+      }
+    } else if (msg.type === 'line') {
+      // a completed line (joined samples)
+      appendLineText(msg.text || "", msg.line_idx || 0);
+      log(`Line ${ (msg.line_idx||0) + 1 } complete.`);
+    } else if (msg.type === 'done') {
+      log("Generation finished.");
+      // If server also sent final results, show them (optional)
+      if (msg.results) {
+        // show final rows summary at top
+        const hdr = document.createElement('div');
+        hdr.className = 'meta';
+        hdr.innerText = "Final results (summary):";
+        out.insertBefore(hdr, out.firstChild);
+        msg.results.forEach((row, idx) => {
+          const p = document.createElement('div');
+          p.className = 'row';
+          p.innerHTML = `<div class="line-title">Line ${idx+1}</div><div style="font-family:monospace; white-space:pre-wrap;">${row}</div>`;
+          out.insertBefore(p, hdr.nextSibling);
+        });
+      }
+      setRunning(false);
+    } else if (msg.type === 'error') {
+      log("Server error: " + (msg.msg || JSON.stringify(msg)));
+      out.innerText = "Error: " + (msg.msg || JSON.stringify(msg));
+      setRunning(false);
+    } else {
+      // unknown type: print to log
+      log("Unknown message type: " + JSON.stringify(msg));
+    }
+  }
+
+  genBtn.addEventListener('click', () => {
+    // gather params
+    const prompt = document.getElementById('prompt').value;
+    const lines = parseInt(document.getElementById('lines').value || "5");
+    const samples = parseInt(document.getElementById('samples').value || "5");
+    const tokens = parseInt(document.getElementById('tokens').value || "30");
+    const temperature = parseFloat(document.getElementById('temperature').value || "0.8");
+    const top_k = parseInt(document.getElementById('top_k').value || "200");
+    const mode = document.getElementById('mode').value || 'batch';
+
+    // reset UI
+    clearOutput();
+    logEl.innerText = "";
+    setRunning(true);
+    // start streaming request
+    startStreamRequest({ prompt, lines, samples, tokens, temperature, top_k, mode });
+  });
+
+  stopBtn.addEventListener('click', () => {
+    if (controller) {
+      controller.abort();
+      controller = null;
+      setRunning(false);
+      log("User requested stop.");
+    }
+  });
+
+  // initial status
+  setRunning(false);
+})();
+</script>
+</body>
+</html>
