@@ -21,7 +21,7 @@ Press F5 to generate other outputs
 <hr>
 <h4>2. Feature extraction and Classification</h4>
 
-There are many similar ones, but I like this post https://developer.nvidia.com/blog/deep-learning-nutshell-core-concepts/#entry-content-comments .
+There are many similar ones, but I like this post https://developer.nvidia.com/blog/deep-learning-nutshell-core-concepts .
 <br /><br />
 Good article, that described in a simple way the fundamental concepts of networks. And a very good image shows something important: the feature extraction phase, what the model looks for in the data. And then classification and sampling.
 <br /><br />
