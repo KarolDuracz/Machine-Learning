@@ -26,3 +26,8 @@ There are many similar ones, but I like this post https://developer.nvidia.com/b
 Good article, that described in a simple way the fundamental concepts of networks. And a very good image shows something important: the feature extraction phase, what the model looks for in the data. And then classification and sampling.
 <br /><br />
 One word to Andrej's nanoGPT ( LLM concept ) https://github.com/karpathy/nanoGPT . nanoGPT is scalable because you can change several parameters easily to increase the size of the model and it generalizes quite well. And this model has really good enough "feature extraction", to build base model. 
+<hr>
+
+// 18-04-2026
+<i>I'll remove this information later. This is the plan for the next step(s). I need to do something about EMBEDDINGS. Something about spaces in embeddings, etc. What's going on there and how to visualize it. Okay, it can be reduced to 2D, but... For now, I'm interested in these kinds of things in the next steps. That is, what's at the beginning of the network. From the beginning.</i>
+// TODO
