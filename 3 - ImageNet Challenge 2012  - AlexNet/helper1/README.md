@@ -13,4 +13,5 @@ The image shows demo2.html. An example of visualizing 11x11 patches that produce
 
 ![dump](https://github.com/KarolDuracz/Machine-Learning/blob/main/images/alexnet%20helper1.png?raw=true)
 
- // 21-04-2026 - Maybe this is wrong approach to visualization. But for now, just to have something preliminary in this repo.
+ // 21-04-2026 - Maybe this is wrong approach to visualization. But for now, just to have something preliminary in this repo. <br />
+ But considering what AlexNet does and the overall approach, the network training algorithm is crucial. 
