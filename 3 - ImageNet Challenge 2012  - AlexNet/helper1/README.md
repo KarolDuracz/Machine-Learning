@@ -9,6 +9,6 @@ demo2.html - a simple demo that generates random values ​​on the left and ca
 demo3 - conv2d.html - a demo that patches 11x11 to 3x3 <br /> <br />
 script.py - to manually check if there are actually 55 kernels on the next layer <br /> <br />
 
-The image shows demo2.html. An example of visualizing 11x11 patches that produces 1 output for each patch with 4 padding sizes. To get a rough idea, how this compute grids of pixels in next layers using some kernels, filters, and different layer to compute somehing like polling etc.
+The image shows demo2.html. An example of visualizing 11x11 patches that produces 1 output for each patch with 4 padding sizes. To get a rough idea, how this compute grids of pixels in next layers using some kernels, filters, and different layer to compute something like pooling etc.
 
 ![dump](https://github.com/KarolDuracz/Machine-Learning/blob/main/images/alexnet%20helper1.png?raw=true)
