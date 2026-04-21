@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Convolution Patch Animation with Output Grid</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      color: #222;
+    }
+
+    h2 {
+      margin-bottom: 8px;
+    }
+
+    .note {
+      margin: 8px 0 16px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #444;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      align-items: center;
+      margin: 12px 0 18px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    button {
+      padding: 8px 12px;
+      border: 1px solid #999;
+      background: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #f3f3f3;
+    }
+
+    input[type="range"] {
+      vertical-align: middle;
+    }
+
+    .status {
+      margin-left: auto;
+      font-weight: bold;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.7fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    .small {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .picture-wrap {
+      position: relative;
+      display: inline-block;
+      border: 1px solid #ddd;
+      padding: 8px;
+      border-radius: 8px;
+      background: #fcfcfc;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1px;
+      user-select: none;
+    }
+
+    .cell {
+      width: 18px;
+      height: 18px;
+      box-sizing: border-box;
+    }
+
+    .cell.active {
+      outline: 1px solid rgba(255, 0, 0, 0.85);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    }
+
+    .output-grid-wrap {
+      display: inline-block;
+      border: 1px solid #ddd;
+      padding: 8px;
+      border-radius: 8px;
+      background: #fcfcfc;
+    }
+
+    .output-grid {
+      display: grid;
+      gap: 1px;
+      user-select: none;
+    }
+
+    .out-cell {
+      width: 42px;
+      height: 42px;
+      border: 1px solid #bbb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      text-align: center;
+      box-sizing: border-box;
+      background: #f7f7f7;
+      position: relative;
+    }
+
+    .out-cell.active {
+      outline: 2px solid rgba(0, 120, 255, 0.95);
+      z-index: 1;
+    }
+
+    .out-cell.filled {
+      background: #dff2ff;
+      font-weight: bold;
+    }
+
+    .out-label {
+      font-size: 12px;
+      margin-bottom: 8px;
+      color: #444;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 8px;
+      pointer-events: none;
+    }
+
+    .patch-box {
+      position: absolute;
+      border: 3px solid rgba(220, 0, 0, 0.95);
+      background: rgba(255, 235, 59, 0.10);
+      box-sizing: border-box;
+    }
+
+    .badge {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      font-size: 12px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .formula {
+      font-family: Consolas, Monaco, monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      background: #f8f8f8;
+      border: 1px solid #e1e1e1;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .table-wrap {
+      max-height: 420px;
+      overflow: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 5px 6px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f2f2f2;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tr.active {
+      background: #e8f7ff;
+      font-weight: bold;
+    }
+
+    .legend {
+      font-size: 12px;
+      color: #555;
+      margin-top: 8px;
+    }
+
+    .side-note {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #666;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Convolution Layer Animation</h2>
+
+<div class="note">
+  This demo shows how a convolution layer scans one picture with an <b>11×11</b> patch and <b>stride 4</b>.
+  The moving box changes position step by step, and the small grid on the right fills with output values.
+</div>
+
+<div class="toolbar">
+  <button id="playBtn">Play</button>
+  <button id="nextBtn">Next</button>
+  <button id="resetBtn">Reset</button>
+  <button id="regenBtn">Regenerate Random Image</button>
+
+  <label>
+    Speed:
+    <input id="speed" type="range" min="120" max="1600" value="650">
+    <span id="speedLabel">650 ms</span>
+  </label>
+
+  <div class="status" id="status">Patch 1 / 16</div>
+</div>
+
+<div class="layout">
+  <div class="panel">
+    <h3>One image with moving 11×11 patch</h3>
+    <div class="small">
+      Grayscale cells represent pixel values. The red box is the current convolution patch.
+    </div>
+
+    <div class="picture-wrap">
+      <div id="imageGrid" class="grid"></div>
+      <div id="overlay" class="overlay">
+        <div id="patchBox" class="patch-box"></div>
+        <div id="badge" class="badge">Patch 1</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      Output is computed as: <code>sum(image_patch × kernel) + bias</code>, then ReLU.
+    </div>
+
+    <div class="formula" id="formulaBox"></div>
+  </div>
+
+  <div class="panel">
+    <h3>Output feature map</h3>
+    <div class="out-label">Each cell is one patch result. This demo produces a 4×4 output map.</div>
+
+    <div class="output-grid-wrap">
+      <div id="outputGrid" class="output-grid"></div>
+    </div>
+
+    <div class="side-note">
+      The current cell lights up as the patch moves across the image.
+    </div>
+  </div>
+</div>
+
+<div class="panel" style="margin-top:16px;">
+  <h3>Patch results table</h3>
+  <div class="small">
+    Each row is one patch position from left to right, top to bottom.
+  </div>
+
+  <div class="table-wrap">
+    <table id="resultTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Top-left (r,c)</th>
+          <th>Bias</th>
+          <th>Pre-ReLU</th>
+          <th>ReLU Output</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const IMG_SIZE = 23;
+  const K = 11;
+  const STRIDE = 4;
+  const CELL = 18;
+  const GAP = 1;
+  const PADDING = 8;
+
+  const OUT_SIZE = Math.floor((IMG_SIZE - K) / STRIDE) + 1; // 4 for 23,11,4
+
+  const imageGrid = document.getElementById("imageGrid");
+  const overlay = document.getElementById("overlay");
+  const patchBox = document.getElementById("patchBox");
+  const badge = document.getElementById("badge");
+  const formulaBox = document.getElementById("formulaBox");
+  const resultTableBody = document.querySelector("#resultTable tbody");
+  const outputGrid = document.getElementById("outputGrid");
+  const statusEl = document.getElementById("status");
+  const playBtn = document.getElementById("playBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const regenBtn = document.getElementById("regenBtn");
+  const speedInput = document.getElementById("speed");
+  const speedLabel = document.getElementById("speedLabel");
+
+  let imageData = [];
+  let kernel = [];
+  let bias = 0;
+  let positions = [];
+  let results = [];
+  let cellEls = [];
+  let outputCellEls = [];
+  let currentStep = 0;
+  let timer = null;
+
+  function rand(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function round3(x) {
+    return Number(x).toFixed(3);
+  }
+
+  function relu(x) {
+    return Math.max(0, x);
+  }
+
+  function gray(v) {
+    const t = Math.max(0, Math.min(1, v));
+    const light = 96 - t * 70;
+    return `hsl(0, 0%, ${light}%)`;
+  }
+
+  function outputColor(v) {
+    const t = Math.max(0, Math.min(1, v / 25));
+    const light = 96 - t * 42;
+    return `hsl(210, 75%, ${light}%)`;
+  }
+
+  function make2D(h, w, min = 0, max = 1) {
+    return Array.from({ length: h }, () =>
+      Array.from({ length: w }, () => rand(min, max))
+    );
+  }
+
+  function buildPositions() {
+    const out = [];
+    for (let r = 0; r <= IMG_SIZE - K; r += STRIDE) {
+      for (let c = 0; c <= IMG_SIZE - K; c += STRIDE) {
+        out.push([r, c]);
+      }
+    }
+    return out;
+  }
+
+  function computeAt(r0, c0) {
+    let sum = 0;
+    for (let i = 0; i < K; i++) {
+      for (let j = 0; j < K; j++) {
+        sum += imageData[r0 + i][c0 + j] * kernel[i][j];
+      }
+    }
+    const pre = sum + bias;
+    return {
+      pre,
+      out: relu(pre)
+    };
+  }
+
+  function renderImage() {
+    imageGrid.innerHTML = "";
+    imageGrid.style.gridTemplateColumns = `repeat(${IMG_SIZE}, ${CELL}px)`;
+
+    cellEls = [];
+    for (let r = 0; r < IMG_SIZE; r++) {
+      const row = [];
+      for (let c = 0; c < IMG_SIZE; c++) {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.style.background = gray(imageData[r][c]);
+        imageGrid.appendChild(cell);
+        row.push(cell);
+      }
+      cellEls.push(row);
+    }
+
+    const totalW = IMG_SIZE * CELL + (IMG_SIZE - 1) * GAP;
+    const totalH = IMG_SIZE * CELL + (IMG_SIZE - 1) * GAP;
+    overlay.style.width = totalW + "px";
+    overlay.style.height = totalH + "px";
+  }
+
+  function renderOutputGrid() {
+    outputGrid.innerHTML = "";
+    outputGrid.style.gridTemplateColumns = `repeat(${OUT_SIZE}, 42px)`;
+
+    outputCellEls = [];
+    for (let r = 0; r < OUT_SIZE; r++) {
+      const row = [];
+      for (let c = 0; c < OUT_SIZE; c++) {
+        const cell = document.createElement("div");
+        cell.className = "out-cell";
+        cell.textContent = "";
+        outputGrid.appendChild(cell);
+        row.push(cell);
+      }
+      outputCellEls.push(row);
+    }
+  }
+
+  function renderTable() {
+    resultTableBody.innerHTML = "";
+    results.forEach((res, idx) => {
+      const tr = document.createElement("tr");
+      tr.dataset.step = idx;
+      tr.innerHTML = `
+        <td>${idx + 1}</td>
+        <td>(${positions[idx][0]}, ${positions[idx][1]})</td>
+        <td>${round3(bias)}</td>
+        <td>${round3(res.pre)}</td>
+        <td>${round3(res.out)}</td>
+      `;
+      resultTableBody.appendChild(tr);
+    });
+  }
+
+  function updateView(step) {
+    currentStep = step % positions.length;
+    const [r0, c0] = positions[currentStep];
+    const res = results[currentStep];
+
+    const outR = Math.floor(currentStep / OUT_SIZE);
+    const outC = currentStep % OUT_SIZE;
+
+    // Clear active cells
+    for (let r = 0; r < IMG_SIZE; r++) {
+      for (let c = 0; c < IMG_SIZE; c++) {
+        cellEls[r][c].classList.remove("active");
+      }
+    }
+
+    // Highlight current patch on input image
+    for (let i = 0; i < K; i++) {
+      for (let j = 0; j < K; j++) {
+        cellEls[r0 + i][c0 + j].classList.add("active");
+      }
+    }
+
+    // Patch rectangle
+    const left = c0 * (CELL + GAP);
+    const top = r0 * (CELL + GAP);
+    const size = K * CELL + (K - 1) * GAP;
+
+    patchBox.style.left = left + "px";
+    patchBox.style.top = top + "px";
+    patchBox.style.width = size + "px";
+    patchBox.style.height = size + "px";
+
+    badge.style.left = (left + 6) + "px";
+    badge.style.top = (top + 6) + "px";
+    badge.textContent = `Patch ${currentStep + 1}`;
+
+    // Fill output feature map cell
+    for (let r = 0; r < OUT_SIZE; r++) {
+      for (let c = 0; c < OUT_SIZE; c++) {
+        outputCellEls[r][c].classList.remove("active");
+      }
+    }
+
+    const outCell = outputCellEls[outR][outC];
+    outCell.textContent = round3(res.out);
+    outCell.style.background = outputColor(res.out);
+    outCell.classList.add("filled", "active");
+
+    // Table highlight
+    [...resultTableBody.querySelectorAll("tr")].forEach((tr, idx) => {
+      tr.classList.toggle("active", idx === currentStep);
+      //if (idx === currentStep) tr.scrollIntoView({ block: "nearest" });
+    });
+
+    statusEl.textContent = `Patch ${currentStep + 1} / ${positions.length}`;
+
+    formulaBox.textContent =
+`Current patch: ${currentStep + 1} / ${positions.length}
+Top-left position: (${r0}, ${c0})
+Output map position: (${outR}, ${outC})
+Kernel size: 11×11
+Stride: 4
+
+Pre-ReLU = Σ(image_patch × kernel) + bias
+         = ${round3(res.pre)}
+ReLU     = ${round3(res.out)}`;
+  }
+
+  function generateDemo() {
+    imageData = make2D(IMG_SIZE, IMG_SIZE, 0, 1);
+    kernel = make2D(K, K, -1, 1);
+    bias = rand(-0.5, 0.5);
+    positions = buildPositions();
+    results = positions.map(([r, c]) => computeAt(r, c));
+
+    renderImage();
+    renderOutputGrid();
+    renderTable();
+    updateView(0);
+  }
+
+  function stop() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+    playBtn.textContent = "Play";
+  }
+
+  function play() {
+    stop();
+    timer = setInterval(() => {
+      updateView(currentStep + 1);
+      if (currentStep === positions.length - 1) {
+        stop();
+      }
+    }, Number(speedInput.value));
+    playBtn.textContent = "Pause";
+  }
+
+  playBtn.addEventListener("click", () => {
+    if (timer) stop();
+    else play();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    stop();
+    updateView((currentStep + 1) % positions.length);
+  });
+
+  resetBtn.addEventListener("click", () => {
+    stop();
+    updateView(0);
+  });
+
+  regenBtn.addEventListener("click", () => {
+    stop();
+    generateDemo();
+  });
+
+  speedInput.addEventListener("input", () => {
+    speedLabel.textContent = `${speedInput.value} ms`;
+    if (timer) {
+      play();
+    }
+  });
+
+  speedLabel.textContent = `${speedInput.value} ms`;
+  generateDemo();
+</script>
+
+</body>
+</html>

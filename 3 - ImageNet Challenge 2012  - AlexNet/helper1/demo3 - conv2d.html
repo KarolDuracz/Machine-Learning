@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>AlexNet Conv2D (55x55x96) Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      color: #222;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+    }
+
+    .layer-line {
+      font-family: Consolas, Monaco, monospace;
+      background: #f6f6f6;
+      border: 1px solid #ddd;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin: 10px 0 14px;
+      font-size: 14px;
+    }
+
+    .note {
+      margin: 0 0 16px;
+      font-size: 13px;
+      color: #444;
+      line-height: 1.45;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      align-items: center;
+      margin: 12px 0 18px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    button, select {
+      padding: 7px 10px;
+      border: 1px solid #999;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    button:hover, select:hover {
+      background: #f3f3f3;
+    }
+
+    input[type="range"] {
+      vertical-align: middle;
+    }
+
+    .status {
+      margin-left: auto;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    .small {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      display: inline-block;
+      border: 1px solid #ddd;
+      padding: 8px;
+      border-radius: 8px;
+      background: #fcfcfc;
+    }
+
+    canvas {
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 8px;
+      pointer-events: none;
+    }
+
+    .patch-box {
+      position: absolute;
+      border: 3px solid rgba(220, 0, 0, 0.95);
+      background: rgba(255, 235, 59, 0.10);
+      box-sizing: border-box;
+    }
+
+    .badge {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.86);
+      color: #fff;
+      font-size: 12px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      white-space: nowrap;
+      top: 4px;
+      left: 4px;
+    }
+
+    .formula {
+      font-family: Consolas, Monaco, monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      background: #f8f8f8;
+      border: 1px solid #e1e1e1;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .output-box {
+      display: inline-block;
+      border: 1px solid #ddd;
+      padding: 8px;
+      border-radius: 8px;
+      background: #fcfcfc;
+    }
+
+    .output-note {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .stats {
+      margin-top: 10px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      background: #f8f8f8;
+      border: 1px solid #e1e1e1;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .table-wrap {
+      max-height: 430px;
+      overflow: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 12px;
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 5px 6px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f2f2f2;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tr.active {
+      background: #e8f7ff;
+      font-weight: bold;
+    }
+
+    .footer-note {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Conv2D demo for AlexNet-style first layer</h2>
+
+<div class="layer-line">conv2d (Conv2D) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (None, 55, 55, 96) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 34944</div>
+
+<div class="note">
+  This shows a 227×227×3 input image scanned by 96 kernels of size 11×11×3 with stride 4.
+  Output shape is 55×55×96 because <code>(227 - 11) / 4 + 1 = 55</code>.
+  Parameter count is <code>(11×11×3 + 1) × 96 = 34944</code>.
+</div>
+
+<div class="toolbar">
+  <button id="playBtn">Play</button>
+  <button id="nextBtn">Next Patch</button>
+  <button id="resetBtn">Reset</button>
+  <button id="regenBtn">Regenerate Random Values</button>
+
+  <label>
+    Filter:
+    <select id="filterSelect"></select>
+  </label>
+
+  <label>
+    Speed:
+    <input id="speed" type="range" min="15" max="1600" value="120">
+    <span id="speedLabel">120 ms</span>
+  </label>
+
+  <div class="status" id="status">Patch 1 / 3025</div>
+</div>
+
+<div class="layout">
+  <div class="panel">
+    <h3>Input image with moving 11×11 patch</h3>
+    <div class="small">
+      Red box = current patch. The patch slides across the image with stride 4.
+      Current filter is used to compute the output.
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="inputCanvas" width="227" height="227"></canvas>
+      <div id="overlay" class="overlay">
+        <div id="patchBox" class="patch-box"></div>
+        <div id="badge" class="badge">Patch 1</div>
+      </div>
+    </div>
+
+    <div class="formula" id="formulaBox"></div>
+  </div>
+
+  <div class="panel">
+    <h3>Output feature map for selected filter</h3>
+    <div class="output-note">
+      This 55×55 map is one channel from the 96 output channels.
+      The selected cell is filled as the patch moves.
+    </div>
+
+    <div class="output-box">
+      <canvas id="outputCanvas" width="55" height="55"></canvas>
+    </div>
+
+    <div class="stats" id="statsBox"></div>
+  </div>
+</div>
+
+<div class="panel" style="margin-top:16px;">
+  <h3>Table for all 96 kernels</h3>
+  <div class="small">
+    Each row shows one kernel. For compactness, the table lists the bias and the output at the center patch location.
+  </div>
+
+  <div class="table-wrap">
+    <table id="kernelTable">
+      <thead>
+        <tr>
+          <th>Kernel #</th>
+          <th>Bias</th>
+          <th>Center patch output</th>
+          <th>Parameters / kernel</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="footer-note">
+    Parameter count per kernel: <code>11×11×3 + 1 = 364</code>. Total: <code>364 × 96 = 34944</code>.
+  </div>
+</div>
+
+<script>
+  const INPUT_SIZE = 227;
+  const K = 11;
+  const STRIDE = 4;
+  const OUT_SIZE = Math.floor((INPUT_SIZE - K) / STRIDE) + 1; // 55
+  const NUM_FILTERS = 96;
+
+  const inputCanvas = document.getElementById("inputCanvas");
+  const outputCanvas = document.getElementById("outputCanvas");
+  const inputCtx = inputCanvas.getContext("2d");
+  const outputCtx = outputCanvas.getContext("2d");
+  const overlay = document.getElementById("overlay");
+  const patchBox = document.getElementById("patchBox");
+  const badge = document.getElementById("badge");
+  const formulaBox = document.getElementById("formulaBox");
+  const statsBox = document.getElementById("statsBox");
+  const statusEl = document.getElementById("status");
+  const playBtn = document.getElementById("playBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const regenBtn = document.getElementById("regenBtn");
+  const speedInput = document.getElementById("speed");
+  const speedLabel = document.getElementById("speedLabel");
+  const filterSelect = document.getElementById("filterSelect");
+  const kernelTableBody = document.querySelector("#kernelTable tbody");
+
+  const SCALE_IN = 2;   // display size = 454x454
+  const SCALE_OUT = 6;  // display size = 330x330
+
+  inputCanvas.style.width = (INPUT_SIZE * SCALE_IN) + "px";
+  inputCanvas.style.height = (INPUT_SIZE * SCALE_IN) + "px";
+  outputCanvas.style.width = (OUT_SIZE * SCALE_OUT) + "px";
+  outputCanvas.style.height = (OUT_SIZE * SCALE_OUT) + "px";
+
+  let imageData = []; // [3][227][227]
+  let filters = [];   // 96 filters
+  let positions = [];  // 55*55 = 3025
+  let currentPatch = 0;
+  let selectedFilter = 0;
+  let timer = null;
+  let cellValues = []; // outputs for selected filter [55][55]
+  let kernelSummaries = []; // table rows
+
+  function rand(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function round3(x) {
+    return Number(x).toFixed(3);
+  }
+
+  function relu(x) {
+    return Math.max(0, x);
+  }
+
+  function gray(v) {
+    const t = Math.max(0, Math.min(1, v));
+    const light = 96 - t * 72;
+    return `hsl(0, 0%, ${light}%)`;
+  }
+
+  function outputColor(v) {
+    const t = Math.max(0, Math.min(1, v / 25));
+    const light = 96 - t * 44;
+    return `hsl(210, 75%, ${light}%)`;
+  }
+
+  function makeInput() {
+    imageData = Array.from({ length: 3 }, () =>
+      Array.from({ length: INPUT_SIZE }, () =>
+        Array.from({ length: INPUT_SIZE }, () => rand(0, 1))
+      )
+    );
+  }
+
+  function makeFilter() {
+    const w = Array.from({ length: 3 }, () =>
+      Array.from({ length: K }, () =>
+        Array.from({ length: K }, () => rand(-1, 1))
+      )
+    );
+    const b = rand(-0.5, 0.5);
+    return { w, b };
+  }
+
+  function makeFilters() {
+    filters = Array.from({ length: NUM_FILTERS }, makeFilter);
+  }
+
+  function buildPositions() {
+    const out = [];
+    for (let r = 0; r <= INPUT_SIZE - K; r += STRIDE) {
+      for (let c = 0; c <= INPUT_SIZE - K; c += STRIDE) {
+        out.push([r, c]);
+      }
+    }
+    return out;
+  }
+
+  function dotAt(filterIdx, r0, c0) {
+    const f = filters[filterIdx];
+    let sum = 0;
+    for (let ch = 0; ch < 3; ch++) {
+      for (let i = 0; i < K; i++) {
+        for (let j = 0; j < K; j++) {
+          sum += imageData[ch][r0 + i][c0 + j] * f.w[ch][i][j];
+        }
+      }
+    }
+    const pre = sum + f.b;
+    return { pre, out: relu(pre) };
+  }
+
+  function computeSelectedMap() {
+    cellValues = Array.from({ length: OUT_SIZE }, () => Array(OUT_SIZE).fill(0));
+    for (let idx = 0; idx < positions.length; idx++) {
+      const [r0, c0] = positions[idx];
+      const rr = Math.floor(idx / OUT_SIZE);
+      const cc = idx % OUT_SIZE;
+      const res = dotAt(selectedFilter, r0, c0);
+      cellValues[rr][cc] = res.out;
+    }
+  }
+
+  function drawInput() {
+    for (let ch = 0; ch < 3; ch++) {
+      for (let r = 0; r < INPUT_SIZE; r++) {
+        for (let c = 0; c < INPUT_SIZE; c++) {
+          inputCtx.fillStyle = gray(imageData[ch][r][c]);
+          inputCtx.fillRect(c, r, 1, 1);
+        }
+      }
+    }
+  }
+
+  function drawOutputMap() {
+    outputCtx.clearRect(0, 0, OUT_SIZE, OUT_SIZE);
+    for (let r = 0; r < OUT_SIZE; r++) {
+      for (let c = 0; c < OUT_SIZE; c++) {
+        outputCtx.fillStyle = outputColor(cellValues[r][c]);
+        outputCtx.fillRect(c, r, 1, 1);
+      }
+    }
+  }
+
+  function buildOutputSelectionStyles() {
+    // no-op, canvas is drawn as the map
+  }
+
+  function buildFilterTable() {
+    kernelTableBody.innerHTML = "";
+    kernelSummaries = [];
+
+    const centerR = Math.floor((INPUT_SIZE - K) / 2);
+    const centerC = Math.floor((INPUT_SIZE - K) / 2);
+
+    for (let idx = 0; idx < NUM_FILTERS; idx++) {
+      const center = dotAt(idx, centerR, centerC);
+      kernelSummaries.push(center);
+
+      const tr = document.createElement("tr");
+      tr.dataset.idx = idx;
+      tr.innerHTML = `
+        <td>${idx + 1}</td>
+        <td>${round3(filters[idx].b)}</td>
+        <td>${round3(center.out)}</td>
+        <td>364</td>
+      `;
+      kernelTableBody.appendChild(tr);
+    }
+  }
+
+  function populateFilterSelect() {
+    filterSelect.innerHTML = "";
+    for (let i = 0; i < NUM_FILTERS; i++) {
+      const opt = document.createElement("option");
+      opt.value = String(i);
+      opt.textContent = `Filter ${i + 1}`;
+      filterSelect.appendChild(opt);
+    }
+    filterSelect.value = String(selectedFilter);
+  }
+
+  function updatePatchOverlay() {
+    const [r0, c0] = positions[currentPatch];
+    const cssScale = SCALE_IN;
+
+    const left = c0 * cssScale;
+    const top = r0 * cssScale;
+    const size = K * cssScale;
+
+    patchBox.style.left = left + "px";
+    patchBox.style.top = top + "px";
+    patchBox.style.width = size + "px";
+    patchBox.style.height = size + "px";
+
+    badge.style.left = (left + 6) + "px";
+    badge.style.top = (top + 6) + "px";
+    badge.textContent = `Patch ${currentPatch + 1}`;
+
+    [...kernelTableBody.querySelectorAll("tr")].forEach((tr, idx) => {
+      tr.classList.toggle("active", idx === selectedFilter);
+    });
+
+    statusEl.textContent = `Patch ${currentPatch + 1} / ${positions.length}`;
+  }
+
+  function updateOutputHighlight() {
+    const rr = Math.floor(currentPatch / OUT_SIZE);
+    const cc = currentPatch % OUT_SIZE;
+
+    drawOutputMap();
+    outputCtx.strokeStyle = "rgba(255,0,0,0.95)";
+    outputCtx.lineWidth = 0.12;
+    outputCtx.strokeRect(cc + 0.05, rr + 0.05, 0.9, 0.9);
+  }
+
+  function updateFormula() {
+    const [r0, c0] = positions[currentPatch];
+    const res = dotAt(selectedFilter, r0, c0);
+    const rr = Math.floor(currentPatch / OUT_SIZE);
+    const cc = currentPatch % OUT_SIZE;
+
+    formulaBox.textContent =
+`Selected filter: ${selectedFilter + 1} / ${NUM_FILTERS}
+Patch position: (${r0}, ${c0})
+Output map cell: (${rr}, ${cc})
+Kernel size: 11×11×3
+Stride: 4
+
+Pre-ReLU = Σ(image_patch × kernel) + bias
+         = ${round3(res.pre)}
+ReLU     = ${round3(res.out)}`;
+
+    statsBox.textContent =
+`Layer shape: (None, 55, 55, 96)
+Input shape:  227×227×3
+Output size:   55×55 per filter
+Filters:       96
+Params/filter: 364
+Total params:   34944
+
+Current filter output at patch ${currentPatch + 1}: ${round3(res.out)}`;
+  }
+
+  function updateView() {
+    updatePatchOverlay();
+    updateOutputHighlight();
+    updateFormula();
+  }
+
+  function regenerate() {
+    stop();
+    makeInput();
+    makeFilters();
+    positions = buildPositions();
+    currentPatch = 0;
+    selectedFilter = 0;
+    populateFilterSelect();
+    buildFilterTable();
+    drawInput();
+    computeSelectedMap();
+    drawOutputMap();
+    updateView();
+  }
+
+  function stop() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+    playBtn.textContent = "Play";
+  }
+
+  function play() {
+    stop();
+    timer = setInterval(() => {
+      currentPatch = (currentPatch + 1) % positions.length;
+      updateView();
+
+      // re-fill the current selected filter map progressively
+      const rr = Math.floor(currentPatch / OUT_SIZE);
+      const cc = currentPatch % OUT_SIZE;
+      const res = dotAt(selectedFilter, ...positions[currentPatch]);
+      cellValues[rr][cc] = res.out;
+
+      if (currentPatch === positions.length - 1) {
+        stop();
+      }
+    }, Number(speedInput.value));
+    playBtn.textContent = "Pause";
+  }
+
+  playBtn.addEventListener("click", () => {
+    if (timer) stop();
+    else play();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    stop();
+    currentPatch = (currentPatch + 1) % positions.length;
+    updateView();
+    const rr = Math.floor(currentPatch / OUT_SIZE);
+    const cc = currentPatch % OUT_SIZE;
+    const res = dotAt(selectedFilter, ...positions[currentPatch]);
+    cellValues[rr][cc] = res.out;
+    drawOutputMap();
+    outputCtx.strokeStyle = "rgba(255,0,0,0.95)";
+    outputCtx.lineWidth = 0.12;
+    outputCtx.strokeRect(cc + 0.05, rr + 0.05, 0.9, 0.9);
+  });
+
+  resetBtn.addEventListener("click", () => {
+    stop();
+    currentPatch = 0;
+    computeSelectedMap();
+    drawOutputMap();
+    updateView();
+  });
+
+  regenBtn.addEventListener("click", regenerate);
+
+  filterSelect.addEventListener("change", () => {
+    stop();
+    selectedFilter = Number(filterSelect.value);
+    computeSelectedMap();
+    currentPatch = 0;
+    drawOutputMap();
+    updateView();
+  });
+
+  speedInput.addEventListener("input", () => {
+    speedLabel.textContent = `${speedInput.value} ms`;
+    if (timer) {
+      play();
+    }
+  });
+
+  speedLabel.textContent = `${speedInput.value} ms`;
+  regenerate();
+</script>
+
+</body>
+</html>
