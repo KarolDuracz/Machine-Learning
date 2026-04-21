@@ -22,5 +22,6 @@ ImageNet 2012 tasks - https://image-net.org/challenges/LSVRC/2012/index#introduc
 
 Description of tasks
 
-![dump](https://github.com/KarolDuracz/Machine-Learning/blob/main/images/434%20-%2021-04-2026%20-%20imagenet%202012%20competition.png?raw=true)
+![dump](https://github.com/KarolDuracz/Machine-Learning/blob/main/images/434%20-%2021-04-2026%20-%20%202012%20imagenet%20competition.png?raw=true)
+
 
