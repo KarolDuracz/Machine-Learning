@@ -10,7 +10,7 @@ Lecture 1/16 : Introduction ( https://www.youtube.com/watch?v=2fRnHVVLf1Y )
 <br />
 <hr>
 
-There are many interesting videos. I'll just post these two to get an idea of ​​the thinking process. It's interesting what Mr. Hinton says about network depth. Around the 23 to 39 minute. AlexNet has 7 layers. Current LLMs have 20-30 or more layers to generate predictions.
+There are many interesting videos. I'll just post these two to get an idea of ​​the thinking process. It's interesting what Mr. Hinton says about network depth. Around 23 to 39 minute. AlexNet has 7 layers. Current LLMs have 20-30 or more layers to generate predictions.
 <br /><br />
 [ 1 ] https://www.youtube.com/watch?v=Px3HfB2UkyU - @SmartGirlDumbQuestions YT channel
 <br /><br />
