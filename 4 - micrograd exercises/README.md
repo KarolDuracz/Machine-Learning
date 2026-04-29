@@ -1,5 +1,5 @@
 
-<h3>Fist exercise - fake iris dataset for manual implementation vs pytorch to check correctness of network implementation and calculations</h3>
+<h3>First exercise - fake iris dataset for manual implementation vs pytorch to check correctness of network implementation and calculations</h3>
 Andrej did the same thing in his micrograd video on YouTube. This is specifically for this repo: https://github.com/karpathy/micrograd . But I started not with "make moons" but with something else that seems easier to analyze for me. But that's in the next demo - https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris
 <br /><br />
 Andrej in the first micrograd recording https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ He showed a lot more, primarily by hand-writing  autograd engine. And a few other details. But the whole thing tried to imitate the Pytorch API. And this "from scratch" network implementation is also compared to Pytorch, with some functions, as in my case https://docs.pytorch.org/docs/stable/generated/torch.nn.BCELoss.html#torch.nn.BCELoss .There's something else going on, but the key to this exercise is, among other things, creating your own implementation that achieves the same results as a working pytorch. And that's the first exercise here.
