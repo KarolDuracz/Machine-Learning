@@ -5,3 +5,6 @@
 #2 - In more detail, I think.
 <br /><br />
 #3 - ImageNet Challenge 2012 - where the hype started
+<br /><br />
+<hr>
+#4 - micrograd exercises https://github.com/karpathy/micrograd
