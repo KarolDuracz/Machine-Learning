@@ -57,3 +57,19 @@ Torchviz - demo 1
 This can help analyze both micrograd and graphviz graphs. This is more visible in demo2 in the .ipynb file, where sigmoid is added. This can help to some extent. Therefore, this is my setup for these exercises here.
 <br /><br />
 // 30-04-2026
+<br /><br />
+
+This function creates a slightly more detailed graph for pytorch. For comparison with ``` explore ```
+
+```
+def explore_clean(fn, depth=0):
+    if fn is None:
+        return
+    name = fn.__class__.__name__
+    print("  " * depth + name)
+    if hasattr(fn, 'next_functions'):
+        for next_fn, _ in fn.next_functions:
+            explore_clean(next_fn, depth + 1)
+
+explore_clean(loss_bce.grad_fn)
+```
