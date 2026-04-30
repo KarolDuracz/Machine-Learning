@@ -48,7 +48,7 @@ Mikrograd - demo 1
 
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/7c4addcf3a976d372057d6aba219ebeeaded2323/5%20-%20micrograd%20exercises/1%20-%20exercise%20number%201/micrograd%20graph%20demo1.svg)
 
-Trochviz - demo 1
+Torchviz - demo 1
 <br /><br />
 
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/7c4addcf3a976d372057d6aba219ebeeaded2323/5%20-%20micrograd%20exercises/1%20-%20exercise%20number%201/pytorch%20torchviz%20demo1.svg)
