@@ -31,7 +31,7 @@ I used this approach. Then it can be compare it with the PyTorch implementation,
 
 <h3>Now take a look at the file I posted here - a description of what exactly is here</h3>
 
-Open file from this folder - ``` 1_exercise_1_micrograd.ipynb ```
+Open file from this folder - ``` 1_exercise_1_micrograd_.ipynb ```
 
 <h4>step by step what is it about:</h4>
 1. First, install torchviz.<br />
