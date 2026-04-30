@@ -10,3 +10,5 @@
 #4 - micrograd exercises https://github.com/karpathy/micrograd - part 1 - introduction
 <br /><br />
 #5 - micrograd exercises https://github.com/karpathy/micrograd - part 2 - more exercises
+<br /><br />
+// 30-04-2026 - micrograd exercises is to better prepare for more advanced stuff
