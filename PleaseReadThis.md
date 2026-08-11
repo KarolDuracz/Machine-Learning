@@ -3,7 +3,7 @@
 Hi. I wanted to add a quick note to this repo because I'm wondering what to add next, what exercises to include. I'm not a teacher or trainer. I'm doing this for myself, to better understand machine learning.
 <br /><br />
 KEEP IN MIND that I'd like to add a few other exercises, like "linear regression" and many examples from TensorFlow or the book I have, "Machine Learning with Scikit-Learn, Keras, and TensorFlow" - 
-2d edition PL by Geron Aurelien. But that might disrupt this repository. I'm primarily interested in LLM applications, i.e., text and images.
+2nd edition PL by Geron Aurelien. But that might disrupt this repository. I'm primarily interested in LLM applications, i.e., text and images.
 <br /><br />
 So, this means I've had previous contact with tutorials like one of https://www.tensorflow.org/guide/core/logistic_regression_core
 <br /><br />
