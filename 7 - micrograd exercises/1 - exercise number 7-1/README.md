@@ -55,19 +55,19 @@ In this exercise, I am focusing solely on the node that computes the result for 
 
 5) Now I have new x0f1 data 6.644671999999999. Next, using the power rule formula, I calculate the gradient at x00. ```3 * 1.88 ** (3 - 1) = 10.6032```
 
-6) I get the same result by manually performing another forward pass in listing [0] in the .ipynb file. Next, it performs a forward pass with the updated parameters, calculates the new loss, and updates the parameters—including those in the node containing x00.
+6) I get the same result by manually performing another forward pass in listing [8] in the .ipynb file. Next, it performs a forward pass with the updated parameters, calculates the new loss, and updates the parameters—including those in the node containing x00.
 
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/11dc04f5c1543365835653df9c3d1655b0fca0e9/7%20-%20micrograd%20exercises/1%20-%20exercise%20number%207-1/graph2_25-09-2026_ex.svg)
 
 <h3>Pytorch version</h3>
 
-setup
+setup ( listing [45] )
 
 ```
 a = torch.tensor([2., 3.], requires_grad=True)
 ```
 
-forward and backward 
+forward and backward  ( listing [47] )
 
 ```
 #b = torch.tensor([6., 4.], requires_grad=True)
