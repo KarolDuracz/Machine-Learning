@@ -42,7 +42,7 @@ We obtain a graph.
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/11dc04f5c1543365835653df9c3d1655b0fca0e9/7%20-%20micrograd%20exercises/1%20-%20exercise%20number%207-1/graph1_25-09-2026_ex.svg)
 
 <h3>Here is the main part of this exercise.</h3>
-In this exercise, I am focusing solely on the node that computes the result for __pow__. Knowing the power rule for calculating derivatives (gradients), I can manually perform the forward and backward passes for these specific nodes x00f1 oraz x00.
+In this exercise, I am focusing solely on the node that computes the result for __pow__. Knowing the power rule for calculating derivatives (gradients), I can manually perform the forward and backward passes for these specific nodes x00f1 and x00.
 <br /><br />
 
 1) ```formula to calc grad x00 --> n * X ** n - 1```
