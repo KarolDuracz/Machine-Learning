@@ -53,7 +53,7 @@ In this exercise, I am focusing solely on the node that computes the result for 
 
 4) Ok, I have new data value. Now I can perform the forward pass for this node that is, x00.data ** 3. ```1.88 ** 3 = 6.644671999999999```
 
-5) Now I have new x0f1 data 6.644671999999999. Next, using the power rule formula, I calculate the gradient at x00. ```3 * 1.88 ** (3 - 1) = 10.6032```
+5) Now I have new x00f1 data 6.644671999999999. Next, using the power rule formula, I calculate the gradient at x00. ```3 * 1.88 ** (3 - 1) = 10.6032```
 
 6) I get the same result by manually performing another forward pass in listing [8] in the .ipynb file. Next, it performs a forward pass with the updated parameters, calculates the new loss, and updates the parameters—including those in the node containing x00.
 
