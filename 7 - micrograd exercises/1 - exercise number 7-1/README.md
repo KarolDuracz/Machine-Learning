@@ -112,3 +112,8 @@ A comparison of the same simple calculation using the PyTorch engine. After two 
 This is not a sophisticated demo, but the exercise serves as an introduction to tracing and better understanding how local gradients are calculated at a node in compute graph.
 <br /><br />
 // 25-09-2026
+
+<h3>References</h3>
+1. https://github.com/karpathy/micrograd - mocrograd repo<br />
+2. https://karpathy.github.io/2026/02/12/microgpt/ - new post about micrograd <br />
+3. https://github.com/karpathy/nn-zero-to-hero/tree/master/lectures/micrograd - Neural Networks: Zero to Hero - notebooks
