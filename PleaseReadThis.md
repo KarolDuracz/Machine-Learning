@@ -12,3 +12,5 @@ and I have a book where the basics of linear regression and others are explained
 THUS, I'M NOT POSTING WHAT'S ALREADY THERE. I'll focus more strictly on LLM and other models / architectures.
 <br /><br />
 11-08-2026
+<br /><br />
+btw. These people really made it possible that machines can to think... LLM has potential. That was a goal that was achieved.
