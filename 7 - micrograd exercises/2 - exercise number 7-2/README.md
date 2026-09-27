@@ -14,7 +14,7 @@ Look at listing [57] in this .ipynb file. If we take examples from the nodes I c
 
 <b>EXPLANATION OF THE PLOT ABOVE</b><br />
 Here, you can see two plots (orange and blue) for the functions named `f_m` and `f_m_d` in my notebook (the `.ipynb` file). A vertical line is positioned at x = 2.0. This line intersects both functions at points obtained via `f_m_d(xs[70])` and `f_m(xs[70])`. Why `xs[70]`? Because that is the index corresponding to the value 2.0 on the x-axis specifically, the index resulting from the generation of `xs` using `torch.arange(-5, 5, 0.1)`. <br /><br />
-So, what are the results for these two values, `f_m_d(xs[70])` and `f_m(xs[70])`? They are 2.0 and 8.0. That corresponds to the results for `n * X ** (n - 1) = 12.0` (look at x00 in previous exercise and graph for x00 node) and `X ** 3 = 8` in this case, `2 ** 3 = 8.0` (x00f1 data).<br /><br />
+So, what are the results for these two values, `f_m_d(xs[70])` and `f_m(xs[70])`? They are 12.0 and 8.0. That corresponds to the results for `n * X ** (n - 1) = 12.0` (look at x00 in previous exercise and graph for x00 node) and `X ** 3 = 8` in this case, `2 ** 3 = 8.0` (x00f1 data).<br /><br />
 That's it.
 <br /><br />
 If we examine the second point at 27.0, the lines of the function's graph approach each other and intersect (xs[80] contains value 3.0 for x axis in this case) . That is why both results for x01 and x01f1 are 27.0.And this is clearly visible here.
