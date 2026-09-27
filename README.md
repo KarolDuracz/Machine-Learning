@@ -26,3 +26,6 @@ In short, the problem of a network that looks for parameters that can solve a gi
 <br /><br />
 <hr>
 Please read this - 11-08-2026 - https://github.com/KarolDuracz/Machine-Learning/blob/main/PleaseReadThis.md
+<hr>
+<br />
+#8 -  micrograd exercises - NLP - TODO
