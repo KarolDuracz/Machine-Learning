@@ -1,0 +1,3750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Function Slope Calculator</title>
+
+  <style>
+    :root {
+      --bg: #f4f6fa;
+      --card: #ffffff;
+      --ink: #172033;
+      --muted: #657085;
+      --border: #dce1ea;
+      --accent: #365cff;
+      --accent-dark: #2345df;
+      --green: #15966b;
+      --red: #d94b58;
+      --grid: #e9edf4;
+      --axis: #5f6b7d;
+      --step-bg: #f8faff;
+      --shadow: 0 12px 32px rgba(20, 30, 50, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .app {
+      width: min(1400px, calc(100% - 32px));
+      margin: 24px auto 40px;
+    }
+
+    header {
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 3vw, 2.7rem);
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 365px minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .panel,
+    .graph-card,
+    .results-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 20px;
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+    }
+
+    .panel h2,
+    .results-card h2 {
+      margin: 0 0 16px;
+      font-size: 1.1rem;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(54, 92, 255, 0.12);
+    }
+
+    .hint {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .buttons {
+      display: grid;
+      gap: 9px;
+      margin-top: 20px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition:
+        transform 0.1s ease,
+        background 0.15s ease;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .primary:hover {
+      background: var(--accent-dark);
+    }
+
+    .secondary {
+      background: #edf1f7;
+      color: var(--ink);
+    }
+
+    .secondary:hover {
+      background: #e4e9f1;
+    }
+
+    .error {
+      min-height: 20px;
+      margin-top: 14px;
+      color: var(--red);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    /* =========================================================
+       CALCULATION STEPS
+       ========================================================= */
+
+    .steps-section {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .steps-section h3 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+    }
+
+    .step-group {
+      margin-bottom: 12px;
+      padding: 12px;
+      background: var(--step-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .step-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-title {
+      margin-bottom: 8px;
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .step {
+      margin: 6px 0;
+      color: var(--muted);
+      font-family:
+        "Courier New",
+        Courier,
+        monospace;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .step strong {
+      color: var(--ink);
+    }
+
+    .point-answer {
+      margin-top: 8px;
+      padding: 7px 8px;
+      border-radius: 8px;
+      background: #eaf8f2;
+      color: #107653;
+      font-family:
+        "Courier New",
+        Courier,
+        monospace;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .examples {
+      margin-top: 20px;
+      padding-top: 17px;
+      border-top: 1px solid var(--border);
+    }
+
+    .examples strong {
+      font-size: 0.85rem;
+    }
+
+    .examples p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.75;
+    }
+
+    .right-column {
+      min-width: 0;
+    }
+
+    .graph-card {
+      overflow: hidden;
+    }
+
+    .graph-header {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .graph-title {
+      font-weight: 800;
+    }
+
+    .graph-help {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .graph-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      min-height: 420px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      user-select: none;
+      touch-action: none;
+      cursor: grab;
+    }
+
+    svg.is-panning {
+      cursor: grabbing;
+    }
+
+    .zoom-controls {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      display: flex;
+      gap: 6px;
+      z-index: 10;
+    }
+
+    .zoom-controls button {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--ink);
+      box-shadow: 0 4px 15px rgba(20, 30, 50, 0.12);
+      backdrop-filter: blur(5px);
+      font-size: 1.45rem;
+      line-height: 1;
+    }
+
+    .zoom-controls button:hover {
+      background: #f4f6fa;
+    }
+
+    .legend {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding: 11px 18px 14px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .legend-line {
+      width: 24px;
+      height: 3px;
+      border-radius: 10px;
+      background: var(--accent);
+    }
+
+    .legend-line.dotted {
+      background:
+        repeating-linear-gradient(
+          to right,
+          var(--green) 0 5px,
+          transparent 5px 9px
+        );
+    }
+
+    .legend-line.secant {
+      background: #222b3d;
+    }
+
+    .results-card {
+      margin-top: 20px;
+      padding: 20px;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .result {
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fbfcfe;
+    }
+
+    .result-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .result-value {
+      font-size: 1.12rem;
+      font-weight: 800;
+      word-break: break-word;
+    }
+
+    .formula-box {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #f1f4f9;
+      overflow-x: auto;
+    }
+
+    .formula-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .formula {
+      font-family: "Courier New", monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status {
+      margin-top: 13px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        max-height: none;
+      }
+
+      .results-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 550px) {
+      .app {
+        width: min(100% - 18px, 1400px);
+        margin-top: 12px;
+      }
+
+      .graph-wrap {
+        min-height: 360px;
+      }
+
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .graph-help {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <header>
+      <h1>Function Slope Calculator</h1>
+
+      <p>
+        Enter a function and two x-values to calculate the slope
+        between two points on the function.
+      </p>
+    </header>
+
+
+    <section class="layout">
+
+      <!-- ======================================================
+           LEFT MENU
+           ====================================================== -->
+
+      <aside class="panel">
+
+        <h2>Function & Points</h2>
+
+
+        <div class="field">
+
+          <label for="expression">
+            Function f(x)
+          </label>
+
+          <input
+            id="expression"
+            type="text"
+            value="x^2 - 2*x - 3"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Example: x^2 - 2*x - 3"
+          />
+
+          <div class="hint">
+            Supports +, -, *, /, ^, parentheses,
+            sin, cos, tan, sqrt, abs, log, ln, exp,
+            pi and e.
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="x1">
+            x₁
+          </label>
+
+          <input
+            id="x1"
+            type="number"
+            value="-1"
+            step="any"
+          />
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="x2">
+            x₂
+          </label>
+
+          <input
+            id="x2"
+            type="number"
+            value="2"
+            step="any"
+          />
+
+        </div>
+
+
+        <div class="buttons">
+
+          <button
+            class="primary"
+            id="calculateBtn"
+            type="button"
+          >
+            Calculate & Graph
+          </button>
+
+          <button
+            class="secondary"
+            id="fitBtn"
+            type="button"
+          >
+            Fit Graph
+          </button>
+
+          <button
+            class="secondary"
+            id="swapBtn"
+            type="button"
+          >
+            Swap x₁ and x₂
+          </button>
+
+        </div>
+
+
+        <div
+          class="error"
+          id="error"
+          aria-live="polite"
+        ></div>
+
+
+        <!-- ====================================================
+             CALCULATION STEPS
+             ==================================================== -->
+
+        <section class="steps-section">
+
+          <h3>Calculation Steps</h3>
+
+
+          <!-- POINT 1 -->
+
+          <div class="step-group">
+
+            <div class="step-title">
+              Point 1
+            </div>
+
+            <div
+              class="step"
+              id="point1Step1"
+            >
+              1. Start with f(x)
+            </div>
+
+            <div
+              class="step"
+              id="point1Step2"
+            >
+              2. Substitute x₁
+            </div>
+
+            <div
+              class="step"
+              id="point1Step3"
+            >
+              3. Evaluate y₁
+            </div>
+
+            <div
+              class="point-answer"
+              id="point1Step4"
+            >
+              P₁ = (—, —)
+            </div>
+
+          </div>
+
+
+          <!-- POINT 2 -->
+
+          <div class="step-group">
+
+            <div class="step-title">
+              Point 2
+            </div>
+
+            <div
+              class="step"
+              id="point2Step1"
+            >
+              1. Start with f(x)
+            </div>
+
+            <div
+              class="step"
+              id="point2Step2"
+            >
+              2. Substitute x₂
+            </div>
+
+            <div
+              class="step"
+              id="point2Step3"
+            >
+              3. Evaluate y₂
+            </div>
+
+            <div
+              class="point-answer"
+              id="point2Step4"
+            >
+              P₂ = (—, —)
+            </div>
+
+          </div>
+
+
+          <!-- DELTA -->
+
+          <div class="step-group">
+
+            <div class="step-title">
+              Changes between the points
+            </div>
+
+            <div
+              class="step"
+              id="deltaXStep1"
+            >
+              Δx = x₂ − x₁
+            </div>
+
+            <div
+              class="step"
+              id="deltaXStep2"
+            >
+              = —
+            </div>
+
+            <div
+              class="step"
+              id="deltaXStep3"
+            >
+              = —
+            </div>
+
+
+            <div
+              class="step"
+              id="deltaYStep1"
+            >
+              Δy = y₂ − y₁
+            </div>
+
+            <div
+              class="step"
+              id="deltaYStep2"
+            >
+              = —
+            </div>
+
+            <div
+              class="step"
+              id="deltaYStep3"
+            >
+              = —
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <div class="examples">
+
+          <strong>Examples</strong>
+
+          <p>
+            x^2 - 2*x - 3<br />
+            2*x + 4<br />
+            sin(x)<br />
+            cos(x)<br />
+            sqrt(x)<br />
+            exp(x)<br />
+            1/x
+          </p>
+
+        </div>
+
+      </aside>
+
+
+      <!-- ======================================================
+           RIGHT SIDE
+           ====================================================== -->
+
+      <div class="right-column">
+
+        <section class="graph-card">
+
+          <div class="graph-header">
+
+            <div class="graph-title">
+              Function Graph
+            </div>
+
+            <div class="graph-help">
+              Scroll to zoom • Drag to pan
+            </div>
+
+          </div>
+
+
+          <div class="graph-wrap">
+
+            <svg
+              id="graph"
+              viewBox="0 0 1000 620"
+              preserveAspectRatio="none"
+              aria-label="Function graph"
+            ></svg>
+
+
+            <div class="zoom-controls">
+
+              <button
+                id="zoomIn"
+                type="button"
+                title="Zoom in"
+                aria-label="Zoom in"
+              >
+                +
+              </button>
+
+              <button
+                id="zoomOut"
+                type="button"
+                title="Zoom out"
+                aria-label="Zoom out"
+              >
+                −
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="legend">
+
+            <div class="legend-item">
+              <span class="legend-line"></span>
+              Function
+            </div>
+
+            <div class="legend-item">
+              <span class="legend-line secant"></span>
+              Secant line
+            </div>
+
+            <div class="legend-item">
+              <span class="legend-line dotted"></span>
+              Δx / Δy guides
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ====================================================
+             RESULTS
+             ==================================================== -->
+
+        <section class="results-card">
+
+          <h2>Results</h2>
+
+
+          <div class="results-grid">
+
+            <div class="result">
+
+              <div class="result-label">
+                Point 1
+              </div>
+
+              <div
+                class="result-value"
+                id="point1"
+              >
+                (—, —)
+              </div>
+
+            </div>
+
+
+            <div class="result">
+
+              <div class="result-label">
+                Point 2
+              </div>
+
+              <div
+                class="result-value"
+                id="point2"
+              >
+                (—, —)
+              </div>
+
+            </div>
+
+
+            <div class="result">
+
+              <div class="result-label">
+                Δx
+              </div>
+
+              <div
+                class="result-value"
+                id="deltaX"
+              >
+                —
+              </div>
+
+            </div>
+
+
+            <div class="result">
+
+              <div class="result-label">
+                Δy
+              </div>
+
+              <div
+                class="result-value"
+                id="deltaY"
+              >
+                —
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="formula-box">
+
+            <div class="formula-title">
+              Slope formula
+            </div>
+
+            <div
+              class="formula"
+              id="slopeFormula"
+            >
+              m = (y₂ − y₁) / (x₂ − x₁)
+            </div>
+
+          </div>
+
+
+          <div
+            class="status"
+            id="status"
+          >
+            Enter values and calculate.
+          </div>
+
+        </section>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+    "use strict";
+
+
+    // ============================================================
+    // DOM REFERENCES
+    // ============================================================
+
+    const svg =
+      document.getElementById("graph");
+
+    const expressionInput =
+      document.getElementById("expression");
+
+    const x1Input =
+      document.getElementById("x1");
+
+    const x2Input =
+      document.getElementById("x2");
+
+    const calculateBtn =
+      document.getElementById("calculateBtn");
+
+    const fitBtn =
+      document.getElementById("fitBtn");
+
+    const swapBtn =
+      document.getElementById("swapBtn");
+
+    const zoomInBtn =
+      document.getElementById("zoomIn");
+
+    const zoomOutBtn =
+      document.getElementById("zoomOut");
+
+    const errorEl =
+      document.getElementById("error");
+
+    const point1El =
+      document.getElementById("point1");
+
+    const point2El =
+      document.getElementById("point2");
+
+    const deltaXEl =
+      document.getElementById("deltaX");
+
+    const deltaYEl =
+      document.getElementById("deltaY");
+
+    const slopeFormulaEl =
+      document.getElementById("slopeFormula");
+
+    const statusEl =
+      document.getElementById("status");
+
+
+    // Calculation step elements
+    const point1Step1 =
+      document.getElementById("point1Step1");
+
+    const point1Step2 =
+      document.getElementById("point1Step2");
+
+    const point1Step3 =
+      document.getElementById("point1Step3");
+
+    const point1Step4 =
+      document.getElementById("point1Step4");
+
+
+    const point2Step1 =
+      document.getElementById("point2Step1");
+
+    const point2Step2 =
+      document.getElementById("point2Step2");
+
+    const point2Step3 =
+      document.getElementById("point2Step3");
+
+    const point2Step4 =
+      document.getElementById("point2Step4");
+
+
+    const deltaXStep1 =
+      document.getElementById("deltaXStep1");
+
+    const deltaXStep2 =
+      document.getElementById("deltaXStep2");
+
+    const deltaXStep3 =
+      document.getElementById("deltaXStep3");
+
+
+    const deltaYStep1 =
+      document.getElementById("deltaYStep1");
+
+    const deltaYStep2 =
+      document.getElementById("deltaYStep2");
+
+    const deltaYStep3 =
+      document.getElementById("deltaYStep3");
+
+
+    // ============================================================
+    // GRAPH STATE
+    // ============================================================
+
+    const SVG_WIDTH = 1000;
+    const SVG_HEIGHT = 620;
+
+    let currentFunction = null;
+    let currentExpression = "";
+    let currentX1 = null;
+    let currentX2 = null;
+
+    let viewport = null;
+
+
+    // ============================================================
+    // MATH FUNCTIONS
+    // ============================================================
+
+    const FUNCTIONS = {
+      sin: Math.sin,
+      cos: Math.cos,
+      tan: Math.tan,
+      asin: Math.asin,
+      acos: Math.acos,
+      atan: Math.atan,
+      sqrt: Math.sqrt,
+      abs: Math.abs,
+      log: Math.log10,
+      ln: Math.log,
+      exp: Math.exp
+    };
+
+
+    const CONSTANTS = {
+      pi: Math.PI,
+      e: Math.E
+    };
+
+
+    // ============================================================
+    // TOKENIZER
+    // ============================================================
+
+    function tokenize(input) {
+
+      const tokens = [];
+
+      let i = 0;
+
+
+      while (i < input.length) {
+
+        const char = input[i];
+
+
+        if (/\s/.test(char)) {
+          i++;
+          continue;
+        }
+
+
+        // Number
+        if (/[0-9.]/.test(char)) {
+
+          let number = "";
+
+
+          while (
+            i < input.length &&
+            /[0-9.eE]/.test(input[i])
+          ) {
+
+            number += input[i];
+
+
+            if (
+              (
+                input[i] === "e" ||
+                input[i] === "E"
+              ) &&
+              (
+                input[i + 1] === "+" ||
+                input[i + 1] === "-"
+              )
+            ) {
+
+              number += input[i + 1];
+
+              i += 2;
+
+              continue;
+            }
+
+
+            i++;
+          }
+
+
+          const value =
+            Number(number);
+
+
+          if (!Number.isFinite(value)) {
+
+            throw new Error(
+              `Invalid number: ${number}`
+            );
+          }
+
+
+          tokens.push({
+            type: "number",
+            value
+          });
+
+
+          continue;
+        }
+
+
+        // Identifier
+        if (/[a-zA-Z_]/.test(char)) {
+
+          let name = "";
+
+
+          while (
+            i < input.length &&
+            /[a-zA-Z_]/.test(input[i])
+          ) {
+
+            name += input[i];
+
+            i++;
+          }
+
+
+          tokens.push({
+            type: "identifier",
+            value: name.toLowerCase()
+          });
+
+
+          continue;
+        }
+
+
+        // Operators
+        if ("+-*/^".includes(char)) {
+
+          tokens.push({
+            type: "operator",
+            value: char
+          });
+
+          i++;
+
+          continue;
+        }
+
+
+        // Parentheses
+        if (
+          char === "(" ||
+          char === ")"
+        ) {
+
+          tokens.push({
+            type: "paren",
+            value: char
+          });
+
+          i++;
+
+          continue;
+        }
+
+
+        throw new Error(
+          `Unexpected character "${char}".`
+        );
+      }
+
+
+      return tokens;
+    }
+
+
+    // ============================================================
+    // EXPRESSION PARSER
+    // ============================================================
+
+    function parseExpression(input) {
+
+      const tokens =
+        tokenize(input);
+
+      let position = 0;
+
+
+      function peek() {
+        return tokens[position];
+      }
+
+
+      function consume() {
+        return tokens[position++];
+      }
+
+
+      function parsePrimary() {
+
+        const token =
+          peek();
+
+
+        if (!token) {
+          throw new Error(
+            "Unexpected end of expression."
+          );
+        }
+
+
+        // Number
+        if (token.type === "number") {
+
+          consume();
+
+          return () => token.value;
+        }
+
+
+        // Identifier
+        if (token.type === "identifier") {
+
+          consume();
+
+          const name =
+            token.value;
+
+
+          // x
+          if (name === "x") {
+            return x => x;
+          }
+
+
+          // Constant
+          if (name in CONSTANTS) {
+            return () => CONSTANTS[name];
+          }
+
+
+          // Function
+          if (name in FUNCTIONS) {
+
+            const next =
+              peek();
+
+
+            if (
+              !next ||
+              next.type !== "paren" ||
+              next.value !== "("
+            ) {
+
+              throw new Error(
+                `${name} requires parentheses.`
+              );
+            }
+
+
+            consume();
+
+
+            const argument =
+              parseAddSubtract();
+
+
+            const closing =
+              peek();
+
+
+            if (
+              !closing ||
+              closing.type !== "paren" ||
+              closing.value !== ")"
+            ) {
+
+              throw new Error(
+                `Missing ")" after ${name}(...).`
+              );
+            }
+
+
+            consume();
+
+
+            return x =>
+              FUNCTIONS[name](
+                argument(x)
+              );
+          }
+
+
+          throw new Error(
+            `Unknown identifier "${name}".`
+          );
+        }
+
+
+        // Parentheses
+        if (
+          token.type === "paren" &&
+          token.value === "("
+        ) {
+
+          consume();
+
+
+          const expression =
+            parseAddSubtract();
+
+
+          const closing =
+            peek();
+
+
+          if (
+            !closing ||
+            closing.type !== "paren" ||
+            closing.value !== ")"
+          ) {
+
+            throw new Error(
+              "Missing closing parenthesis."
+            );
+          }
+
+
+          consume();
+
+
+          return expression;
+        }
+
+
+        // Unary + or -
+        if (
+          token.type === "operator" &&
+          (
+            token.value === "+" ||
+            token.value === "-"
+          )
+        ) {
+
+          consume();
+
+
+          const expression =
+            parsePrimary();
+
+
+          if (token.value === "-") {
+            return x => -expression(x);
+          }
+
+
+          return expression;
+        }
+
+
+        throw new Error(
+          `Unexpected token "${token.value}".`
+        );
+      }
+
+
+      function parsePower() {
+
+        let left =
+          parsePrimary();
+
+
+        const token =
+          peek();
+
+
+        if (
+          token &&
+          token.type === "operator" &&
+          token.value === "^"
+        ) {
+
+          consume();
+
+
+          const right =
+            parsePower();
+
+
+          const leftFn =
+            left;
+
+          const rightFn =
+            right;
+
+
+          return x =>
+            Math.pow(
+              leftFn(x),
+              rightFn(x)
+            );
+        }
+
+
+        return left;
+      }
+
+
+      function parseMultiplyDivide() {
+
+        let left =
+          parsePower();
+
+
+        while (true) {
+
+          const token =
+            peek();
+
+
+          if (
+            !token ||
+            token.type !== "operator" ||
+            !("*/".includes(token.value))
+          ) {
+            break;
+          }
+
+
+          consume();
+
+
+          const right =
+            parsePower();
+
+
+          const leftFn =
+            left;
+
+          const rightFn =
+            right;
+
+
+          if (token.value === "*") {
+
+            left = x =>
+              leftFn(x) *
+              rightFn(x);
+
+          } else {
+
+            left = x =>
+              leftFn(x) /
+              rightFn(x);
+          }
+        }
+
+
+        return left;
+      }
+
+
+      function parseAddSubtract() {
+
+        let left =
+          parseMultiplyDivide();
+
+
+        while (true) {
+
+          const token =
+            peek();
+
+
+          if (
+            !token ||
+            token.type !== "operator" ||
+            !("+-".includes(token.value))
+          ) {
+            break;
+          }
+
+
+          consume();
+
+
+          const right =
+            parseMultiplyDivide();
+
+
+          const leftFn =
+            left;
+
+          const rightFn =
+            right;
+
+
+          if (token.value === "+") {
+
+            left = x =>
+              leftFn(x) +
+              rightFn(x);
+
+          } else {
+
+            left = x =>
+              leftFn(x) -
+              rightFn(x);
+          }
+        }
+
+
+        return left;
+      }
+
+
+      if (tokens.length === 0) {
+
+        throw new Error(
+          "Enter a function."
+        );
+      }
+
+
+      const fn =
+        parseAddSubtract();
+
+
+      if (position < tokens.length) {
+
+        throw new Error(
+          `Unexpected token "${tokens[position].value}".`
+        );
+      }
+
+
+      return x => {
+
+        const value =
+          fn(x);
+
+
+        return typeof value === "number"
+          ? value
+          : NaN;
+      };
+    }
+
+
+    // ============================================================
+    // FORMATTING
+    // ============================================================
+
+    function formatNumber(value) {
+
+      if (!Number.isFinite(value)) {
+        return "undefined";
+      }
+
+
+      if (Math.abs(value) < 1e-10) {
+        return "0";
+      }
+
+
+      if (
+        Math.abs(value) >= 1e6 ||
+        Math.abs(value) < 1e-4
+      ) {
+
+        return value.toExponential(5);
+      }
+
+
+      return Number(
+        value.toPrecision(8)
+      ).toString();
+    }
+
+
+    function formatSubstitutionValue(value) {
+
+      const formatted =
+        formatNumber(value);
+
+
+      if (
+        formatted.startsWith("-")
+      ) {
+        return `(${formatted})`;
+      }
+
+
+      return `(${formatted})`;
+    }
+
+
+    /*
+      Create a readable version of the original
+      equation with x replaced by the selected
+      numeric value.
+
+      Example:
+
+        x^2 - 2*x - 3
+
+      becomes
+
+        (-1)^2 - 2*(-1) - 3
+    */
+
+    function substituteX(
+      expression,
+      x
+    ) {
+
+      const replacement =
+        formatSubstitutionValue(x);
+
+
+      return expression.replace(
+        /\bx\b/gi,
+        replacement
+      );
+    }
+
+
+    // ============================================================
+    // CALCULATION STEPS
+    // ============================================================
+
+    function updateCalculationSteps(
+      expression,
+      x1,
+      y1,
+      x2,
+      y2
+    ) {
+
+      const x1Text =
+        formatNumber(x1);
+
+      const x2Text =
+        formatNumber(x2);
+
+      const y1Text =
+        formatNumber(y1);
+
+      const y2Text =
+        formatNumber(y2);
+
+
+      const substitution1 =
+        substituteX(
+          expression,
+          x1
+        );
+
+
+      const substitution2 =
+        substituteX(
+          expression,
+          x2
+        );
+
+
+      // -----------------------------------------
+      // Point 1
+      // -----------------------------------------
+
+      point1Step1.textContent =
+        `1. Start with f(x) = ${expression}`;
+
+
+      point1Step2.textContent =
+        `2. Substitute x₁ = ${x1Text}:  f(${x1Text}) = ${substitution1}`;
+
+
+      point1Step3.textContent =
+        `3. Evaluate:  y₁ = ${y1Text}`;
+
+
+      point1Step4.textContent =
+        `P₁ = (${x1Text}, ${y1Text})`;
+
+
+      // -----------------------------------------
+      // Point 2
+      // -----------------------------------------
+
+      point2Step1.textContent =
+        `1. Start with f(x) = ${expression}`;
+
+
+      point2Step2.textContent =
+        `2. Substitute x₂ = ${x2Text}:  f(${x2Text}) = ${substitution2}`;
+
+
+      point2Step3.textContent =
+        `3. Evaluate:  y₂ = ${y2Text}`;
+
+
+      point2Step4.textContent =
+        `P₂ = (${x2Text}, ${y2Text})`;
+
+
+      // -----------------------------------------
+      // Delta X
+      // -----------------------------------------
+
+      const deltaX =
+        x2 - x1;
+
+
+      deltaXStep1.textContent =
+        `Δx = x₂ − x₁`;
+
+
+      deltaXStep2.textContent =
+        `= ${x2Text} − ${x1Text}`;
+
+
+      deltaXStep3.textContent =
+        `= ${formatNumber(deltaX)}`;
+
+
+      // -----------------------------------------
+      // Delta Y
+      // -----------------------------------------
+
+      const deltaY =
+        y2 - y1;
+
+
+      deltaYStep1.textContent =
+        `Δy = y₂ − y₁`;
+
+
+      deltaYStep2.textContent =
+        `= ${y2Text} − ${y1Text}`;
+
+
+      deltaYStep3.textContent =
+        `= ${formatNumber(deltaY)}`;
+    }
+
+
+    function resetCalculationSteps() {
+
+      point1Step1.textContent =
+        "1. Start with f(x)";
+
+      point1Step2.textContent =
+        "2. Substitute x₁";
+
+      point1Step3.textContent =
+        "3. Evaluate y₁";
+
+      point1Step4.textContent =
+        "P₁ = (—, —)";
+
+
+      point2Step1.textContent =
+        "1. Start with f(x)";
+
+      point2Step2.textContent =
+        "2. Substitute x₂";
+
+      point2Step3.textContent =
+        "3. Evaluate y₂";
+
+      point2Step4.textContent =
+        "P₂ = (—, —)";
+
+
+      deltaXStep1.textContent =
+        "Δx = x₂ − x₁";
+
+      deltaXStep2.textContent =
+        "= —";
+
+      deltaXStep3.textContent =
+        "= —";
+
+
+      deltaYStep1.textContent =
+        "Δy = y₂ − y₁";
+
+      deltaYStep2.textContent =
+        "= —";
+
+      deltaYStep3.textContent =
+        "= —";
+    }
+
+
+    // ============================================================
+    // SVG HELPERS
+    // ============================================================
+
+    function createSvgElement(
+      tag,
+      attributes = {}
+    ) {
+
+      const element =
+        document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          tag
+        );
+
+
+      for (
+        const [key, value]
+        of Object.entries(attributes)
+      ) {
+
+        element.setAttribute(
+          key,
+          String(value)
+        );
+      }
+
+
+      return element;
+    }
+
+
+    function clearGraph() {
+
+      while (svg.firstChild) {
+        svg.removeChild(
+          svg.firstChild
+        );
+      }
+    }
+
+
+    // ============================================================
+    // WORLD / SCREEN COORDINATES
+    // ============================================================
+
+    function worldToScreen(x, y) {
+
+      const screenX =
+        (
+          x - viewport.xmin
+        ) /
+        (
+          viewport.xmax -
+          viewport.xmin
+        ) *
+        SVG_WIDTH;
+
+
+      const screenY =
+        SVG_HEIGHT -
+        (
+          (
+            y - viewport.ymin
+          ) /
+          (
+            viewport.ymax -
+            viewport.ymin
+          )
+        ) *
+        SVG_HEIGHT;
+
+
+      return {
+        x: screenX,
+        y: screenY
+      };
+    }
+
+
+    function screenToWorld(
+      clientX,
+      clientY
+    ) {
+
+      const rect =
+        svg.getBoundingClientRect();
+
+
+      const pixelX =
+        clientX -
+        rect.left;
+
+
+      const pixelY =
+        clientY -
+        rect.top;
+
+
+      const worldX =
+        viewport.xmin +
+        (
+          pixelX /
+          rect.width
+        ) *
+        (
+          viewport.xmax -
+          viewport.xmin
+        );
+
+
+      const worldY =
+        viewport.ymax -
+        (
+          pixelY /
+          rect.height
+        ) *
+        (
+          viewport.ymax -
+          viewport.ymin
+        );
+
+
+      return {
+        x: worldX,
+        y: worldY
+      };
+    }
+
+
+    // ============================================================
+    // GRID STEP
+    // ============================================================
+
+    function chooseStep(range) {
+
+      const rough =
+        range / 10;
+
+
+      const power =
+        Math.pow(
+          10,
+          Math.floor(
+            Math.log10(rough)
+          )
+        );
+
+
+      const normalized =
+        rough / power;
+
+
+      let step;
+
+
+      if (normalized < 1.5) {
+        step = 1;
+      }
+      else if (normalized < 3) {
+        step = 2;
+      }
+      else if (normalized < 7) {
+        step = 5;
+      }
+      else {
+        step = 10;
+      }
+
+
+      return step * power;
+    }
+
+
+    // ============================================================
+    // AUTOMATIC VIEWPORT
+    // ============================================================
+
+    function getAutomaticViewport(
+      fn,
+      x1,
+      x2
+    ) {
+
+      const centerX =
+        (x1 + x2) / 2;
+
+
+      const distance =
+        Math.abs(x2 - x1);
+
+
+      const halfWidth =
+        Math.max(
+          5,
+          distance * 1.5
+        );
+
+
+      const xmin =
+        centerX - halfWidth;
+
+
+      const xmax =
+        centerX + halfWidth;
+
+
+      const samples = [];
+
+      const count = 700;
+
+
+      for (
+        let i = 0;
+        i <= count;
+        i++
+      ) {
+
+        const x =
+          xmin +
+          (
+            xmax - xmin
+          ) *
+          i /
+          count;
+
+
+        let y;
+
+
+        try {
+          y = fn(x);
+        }
+        catch {
+          y = NaN;
+        }
+
+
+        if (
+          Number.isFinite(y) &&
+          Math.abs(y) < 1e8
+        ) {
+
+          samples.push(y);
+        }
+      }
+
+
+      const y1 =
+        fn(x1);
+
+      const y2 =
+        fn(x2);
+
+
+      if (Number.isFinite(y1)) {
+        samples.push(y1);
+      }
+
+
+      if (Number.isFinite(y2)) {
+        samples.push(y2);
+      }
+
+
+      let ymin;
+      let ymax;
+
+
+      if (samples.length) {
+
+        ymin =
+          Math.min(...samples);
+
+        ymax =
+          Math.max(...samples);
+
+      }
+      else {
+
+        ymin = -5;
+        ymax = 5;
+      }
+
+
+      let rangeY =
+        ymax - ymin;
+
+
+      if (
+        !Number.isFinite(rangeY) ||
+        rangeY === 0
+      ) {
+
+        rangeY = 10;
+
+        ymin -= 5;
+        ymax += 5;
+      }
+
+
+      const padding =
+        rangeY * 0.18;
+
+
+      ymin -= padding;
+      ymax += padding;
+
+
+      return {
+        xmin,
+        xmax,
+        ymin,
+        ymax
+      };
+    }
+
+
+    // ============================================================
+    // DRAW GRID
+    // ============================================================
+
+    function drawGrid() {
+
+      const group =
+        createSvgElement("g");
+
+
+      const xStep =
+        chooseStep(
+          viewport.xmax -
+          viewport.xmin
+        );
+
+
+      const yStep =
+        chooseStep(
+          viewport.ymax -
+          viewport.ymin
+        );
+
+
+      const firstX =
+        Math.ceil(
+          viewport.xmin /
+          xStep
+        ) *
+        xStep;
+
+
+      for (
+        let x = firstX;
+        x <= viewport.xmax;
+        x += xStep
+      ) {
+
+        const p1 =
+          worldToScreen(
+            x,
+            viewport.ymin
+          );
+
+        const p2 =
+          worldToScreen(
+            x,
+            viewport.ymax
+          );
+
+
+        group.appendChild(
+          createSvgElement(
+            "line",
+            {
+              x1: p1.x,
+              y1: p1.y,
+              x2: p2.x,
+              y2: p2.y,
+              stroke: "#e9edf4",
+              "stroke-width": 1
+            }
+          )
+        );
+      }
+
+
+      const firstY =
+        Math.ceil(
+          viewport.ymin /
+          yStep
+        ) *
+        yStep;
+
+
+      for (
+        let y = firstY;
+        y <= viewport.ymax;
+        y += yStep
+      ) {
+
+        const p1 =
+          worldToScreen(
+            viewport.xmin,
+            y
+          );
+
+        const p2 =
+          worldToScreen(
+            viewport.xmax,
+            y
+          );
+
+
+        group.appendChild(
+          createSvgElement(
+            "line",
+            {
+              x1: p1.x,
+              y1: p1.y,
+              x2: p2.x,
+              y2: p2.y,
+              stroke: "#e9edf4",
+              "stroke-width": 1
+            }
+          )
+        );
+      }
+
+
+      svg.appendChild(group);
+    }
+
+
+    // ============================================================
+    // AXES
+    // ============================================================
+
+    function drawAxes() {
+
+      const group =
+        createSvgElement("g");
+
+
+      if (
+        viewport.ymin <= 0 &&
+        viewport.ymax >= 0
+      ) {
+
+        const p1 =
+          worldToScreen(
+            viewport.xmin,
+            0
+          );
+
+        const p2 =
+          worldToScreen(
+            viewport.xmax,
+            0
+          );
+
+
+        group.appendChild(
+          createSvgElement(
+            "line",
+            {
+              x1: p1.x,
+              y1: p1.y,
+              x2: p2.x,
+              y2: p2.y,
+              stroke: "#5f6b7d",
+              "stroke-width": 2
+            }
+          )
+        );
+      }
+
+
+      if (
+        viewport.xmin <= 0 &&
+        viewport.xmax >= 0
+      ) {
+
+        const p1 =
+          worldToScreen(
+            0,
+            viewport.ymin
+          );
+
+        const p2 =
+          worldToScreen(
+            0,
+            viewport.ymax
+          );
+
+
+        group.appendChild(
+          createSvgElement(
+            "line",
+            {
+              x1: p1.x,
+              y1: p1.y,
+              x2: p2.x,
+              y2: p2.y,
+              stroke: "#5f6b7d",
+              "stroke-width": 2
+            }
+          )
+        );
+      }
+
+
+      const xText =
+        createSvgElement(
+          "text",
+          {
+            x: SVG_WIDTH - 18,
+            y:
+              (
+                viewport.ymin <= 0 &&
+                viewport.ymax >= 0
+              )
+                ? worldToScreen(0, 0).y - 10
+                : 25,
+            fill: "#5f6b7d",
+            "font-size": 16,
+            "font-weight": 700,
+            "text-anchor": "end"
+          }
+        );
+
+
+      xText.textContent = "x";
+
+      group.appendChild(xText);
+
+
+      const yText =
+        createSvgElement(
+          "text",
+          {
+            x:
+              (
+                viewport.xmin <= 0 &&
+                viewport.xmax >= 0
+              )
+                ? worldToScreen(0, 0).x + 10
+                : 15,
+            y: 22,
+            fill: "#5f6b7d",
+            "font-size": 16,
+            "font-weight": 700
+          }
+        );
+
+
+      yText.textContent = "y";
+
+      group.appendChild(yText);
+
+
+      svg.appendChild(group);
+    }
+
+
+    // ============================================================
+    // TICK LABELS
+    // ============================================================
+
+    function drawLabels() {
+
+      const group =
+        createSvgElement("g");
+
+
+      const xStep =
+        chooseStep(
+          viewport.xmax -
+          viewport.xmin
+        );
+
+
+      const yStep =
+        chooseStep(
+          viewport.ymax -
+          viewport.ymin
+        );
+
+
+      const firstX =
+        Math.ceil(
+          viewport.xmin /
+          xStep
+        ) *
+        xStep;
+
+
+      for (
+        let x = firstX;
+        x <= viewport.xmax;
+        x += xStep
+      ) {
+
+        if (
+          Math.abs(x) <
+          xStep * 0.001
+        ) {
+          x = 0;
+        }
+
+
+        const p =
+          worldToScreen(
+            x,
+            0
+          );
+
+
+        const labelY =
+          (
+            viewport.ymin <= 0 &&
+            viewport.ymax >= 0
+          )
+            ? p.y + 19
+            : SVG_HEIGHT - 8;
+
+
+        const text =
+          createSvgElement(
+            "text",
+            {
+              x: p.x,
+              y: labelY,
+              fill: "#657085",
+              "font-size": 12,
+              "text-anchor": "middle"
+            }
+          );
+
+
+        text.textContent =
+          formatNumber(x);
+
+
+        group.appendChild(text);
+      }
+
+
+      const firstY =
+        Math.ceil(
+          viewport.ymin /
+          yStep
+        ) *
+        yStep;
+
+
+      for (
+        let y = firstY;
+        y <= viewport.ymax;
+        y += yStep
+      ) {
+
+        if (
+          Math.abs(y) <
+          yStep * 0.001
+        ) {
+          y = 0;
+        }
+
+
+        const p =
+          worldToScreen(
+            0,
+            y
+          );
+
+
+        const labelX =
+          (
+            viewport.xmin <= 0 &&
+            viewport.xmax >= 0
+          )
+            ? p.x - 8
+            : 30;
+
+
+        const text =
+          createSvgElement(
+            "text",
+            {
+              x: labelX,
+              y: p.y + 4,
+              fill: "#657085",
+              "font-size": 12,
+              "text-anchor": "end"
+            }
+          );
+
+
+        text.textContent =
+          formatNumber(y);
+
+
+        group.appendChild(text);
+      }
+
+
+      svg.appendChild(group);
+    }
+
+
+    // ============================================================
+    // DRAW FUNCTION
+    // ============================================================
+
+    function drawFunction(fn) {
+
+      const group =
+        createSvgElement("g");
+
+
+      const samples = 1800;
+
+      let pathData = "";
+
+      let previousValid = false;
+
+      let previousY = null;
+
+
+      for (
+        let i = 0;
+        i <= samples;
+        i++
+      ) {
+
+        const x =
+          viewport.xmin +
+          (
+            viewport.xmax -
+            viewport.xmin
+          ) *
+          i /
+          samples;
+
+
+        let y;
+
+
+        try {
+          y = fn(x);
+        }
+        catch {
+          y = NaN;
+        }
+
+
+        const valid =
+          Number.isFinite(y) &&
+          Math.abs(y) < 1e12;
+
+
+        if (!valid) {
+
+          previousValid = false;
+          previousY = null;
+
+          continue;
+        }
+
+
+        const point =
+          worldToScreen(
+            x,
+            y
+          );
+
+
+        const largeJump =
+          previousValid &&
+          previousY !== null &&
+          Math.abs(
+            point.y - previousY
+          ) >
+          SVG_HEIGHT * 0.75;
+
+
+        if (
+          !previousValid ||
+          largeJump
+        ) {
+
+          pathData +=
+            `M ${point.x} ${point.y} `;
+
+        } else {
+
+          pathData +=
+            `L ${point.x} ${point.y} `;
+        }
+
+
+        previousValid = true;
+
+        previousY = point.y;
+      }
+
+
+      const path =
+        createSvgElement(
+          "path",
+          {
+            d: pathData,
+            fill: "none",
+            stroke: "#365cff",
+            "stroke-width": 4,
+            "stroke-linejoin": "round",
+            "stroke-linecap": "round"
+          }
+        );
+
+
+      group.appendChild(path);
+
+      svg.appendChild(group);
+    }
+
+
+    // ============================================================
+    // SECANT LINE
+    // ============================================================
+
+    function drawSecant(
+      x1,
+      y1,
+      x2,
+      y2
+    ) {
+
+      const slope =
+        (
+          y2 - y1
+        ) /
+        (
+          x2 - x1
+        );
+
+
+      if (!Number.isFinite(slope)) {
+        return;
+      }
+
+
+      const yLeft =
+        y1 +
+        slope *
+        (
+          viewport.xmin -
+          x1
+        );
+
+
+      const yRight =
+        y1 +
+        slope *
+        (
+          viewport.xmax -
+          x1
+        );
+
+
+      const p1 =
+        worldToScreen(
+          viewport.xmin,
+          yLeft
+        );
+
+
+      const p2 =
+        worldToScreen(
+          viewport.xmax,
+          yRight
+        );
+
+
+      svg.appendChild(
+        createSvgElement(
+          "line",
+          {
+            x1: p1.x,
+            y1: p1.y,
+            x2: p2.x,
+            y2: p2.y,
+            stroke: "#222b3d",
+            "stroke-width": 2.5,
+            "stroke-dasharray": "8 7",
+            opacity: 0.85
+          }
+        )
+      );
+    }
+
+
+    // ============================================================
+    // DELTA GUIDES
+    // ============================================================
+
+    function drawGuides(
+      x1,
+      y1,
+      x2,
+      y2
+    ) {
+
+      const p1 =
+        worldToScreen(
+          x1,
+          y1
+        );
+
+
+      const p2 =
+        worldToScreen(
+          x2,
+          y2
+        );
+
+
+      // Δx
+      svg.appendChild(
+        createSvgElement(
+          "line",
+          {
+            x1: p1.x,
+            y1: p1.y,
+            x2: p2.x,
+            y2: p1.y,
+            stroke: "#15966b",
+            "stroke-width": 3,
+            "stroke-dasharray": "5 6"
+          }
+        )
+      );
+
+
+      // Δy
+      svg.appendChild(
+        createSvgElement(
+          "line",
+          {
+            x1: p2.x,
+            y1: p1.y,
+            x2: p2.x,
+            y2: p2.y,
+            stroke: "#15966b",
+            "stroke-width": 3,
+            "stroke-dasharray": "5 6"
+          }
+        )
+      );
+
+
+      // Δx label
+      const midX =
+        (x1 + x2) / 2;
+
+
+      const dxPoint =
+        worldToScreen(
+          midX,
+          y1
+        );
+
+
+      const dxText =
+        createSvgElement(
+          "text",
+          {
+            x: dxPoint.x,
+            y: dxPoint.y - 10,
+            fill: "#15966b",
+            "font-size": 14,
+            "font-weight": 800,
+            "text-anchor": "middle"
+          }
+        );
+
+
+      dxText.textContent =
+        `Δx = ${formatNumber(x2 - x1)}`;
+
+
+      svg.appendChild(dxText);
+
+
+      // Δy label
+      const midY =
+        (y1 + y2) / 2;
+
+
+      const dyPoint =
+        worldToScreen(
+          x2,
+          midY
+        );
+
+
+      const dyText =
+        createSvgElement(
+          "text",
+          {
+            x: dyPoint.x + 10,
+            y: dyPoint.y,
+            fill: "#15966b",
+            "font-size": 14,
+            "font-weight": 800,
+            "dominant-baseline": "middle"
+          }
+        );
+
+
+      dyText.textContent =
+        `Δy = ${formatNumber(y2 - y1)}`;
+
+
+      svg.appendChild(dyText);
+    }
+
+
+    // ============================================================
+    // POINTS
+    // ============================================================
+
+    function drawPoint(
+      x,
+      y,
+      label
+    ) {
+
+      if (!Number.isFinite(y)) {
+        return;
+      }
+
+
+      const p =
+        worldToScreen(
+          x,
+          y
+        );
+
+
+      svg.appendChild(
+        createSvgElement(
+          "circle",
+          {
+            cx: p.x,
+            cy: p.y,
+            r: 9,
+            fill: "#ffffff",
+            stroke: "#172033",
+            "stroke-width": 4
+          }
+        )
+      );
+
+
+      const text =
+        createSvgElement(
+          "text",
+          {
+            x: p.x + 12,
+            y: p.y - 12,
+            fill: "#172033",
+            "font-size": 15,
+            "font-weight": 800
+          }
+        );
+
+
+      text.textContent =
+        label;
+
+
+      svg.appendChild(text);
+    }
+
+
+    // ============================================================
+    // MAIN RENDER
+    // ============================================================
+
+    function render(
+      resetViewport = false
+    ) {
+
+      if (
+        !currentFunction ||
+        !Number.isFinite(currentX1) ||
+        !Number.isFinite(currentX2)
+      ) {
+        return;
+      }
+
+
+      const fn =
+        currentFunction;
+
+
+      const x1 =
+        currentX1;
+
+
+      const x2 =
+        currentX2;
+
+
+      const y1 =
+        fn(x1);
+
+
+      const y2 =
+        fn(x2);
+
+
+      if (!Number.isFinite(y1)) {
+
+        throw new Error(
+          `The function is undefined at x₁ = ${x1}.`
+        );
+      }
+
+
+      if (!Number.isFinite(y2)) {
+
+        throw new Error(
+          `The function is undefined at x₂ = ${x2}.`
+        );
+      }
+
+
+      if (
+        resetViewport ||
+        !viewport
+      ) {
+
+        viewport =
+          getAutomaticViewport(
+            fn,
+            x1,
+            x2
+          );
+      }
+
+
+      clearGraph();
+
+
+      drawGrid();
+
+      drawAxes();
+
+      drawLabels();
+
+      drawFunction(fn);
+
+      drawSecant(
+        x1,
+        y1,
+        x2,
+        y2
+      );
+
+      drawGuides(
+        x1,
+        y1,
+        x2,
+        y2
+      );
+
+      drawPoint(
+        x1,
+        y1,
+        "P₁"
+      );
+
+      drawPoint(
+        x2,
+        y2,
+        "P₂"
+      );
+    }
+
+
+    // ============================================================
+    // CALCULATE
+    // ============================================================
+
+    function calculate(
+      resetViewport = true
+    ) {
+
+      errorEl.textContent = "";
+
+
+      try {
+
+        const expression =
+          expressionInput.value.trim();
+
+
+        if (!expression) {
+
+          throw new Error(
+            "Enter a function equation."
+          );
+        }
+
+
+        const fn =
+          parseExpression(expression);
+
+
+        const x1 =
+          Number(x1Input.value);
+
+
+        const x2 =
+          Number(x2Input.value);
+
+
+        if (
+          !Number.isFinite(x1) ||
+          !Number.isFinite(x2)
+        ) {
+
+          throw new Error(
+            "Enter two valid x-values."
+          );
+        }
+
+
+        if (x1 === x2) {
+
+          throw new Error(
+            "x₁ and x₂ must be different so the slope can be calculated."
+          );
+        }
+
+
+        const y1 =
+          fn(x1);
+
+
+        const y2 =
+          fn(x2);
+
+
+        if (!Number.isFinite(y1)) {
+
+          throw new Error(
+            `The function is undefined at x₁ = ${x1}.`
+          );
+        }
+
+
+        if (!Number.isFinite(y2)) {
+
+          throw new Error(
+            `The function is undefined at x₂ = ${x2}.`
+          );
+        }
+
+
+        const deltaX =
+          x2 - x1;
+
+
+        const deltaY =
+          y2 - y1;
+
+
+        const slope =
+          deltaY / deltaX;
+
+
+        currentFunction =
+          fn;
+
+
+        currentExpression =
+          expression;
+
+
+        currentX1 =
+          x1;
+
+
+        currentX2 =
+          x2;
+
+
+        // Results
+        point1El.textContent =
+          `(${formatNumber(x1)}, ${formatNumber(y1)})`;
+
+
+        point2El.textContent =
+          `(${formatNumber(x2)}, ${formatNumber(y2)})`;
+
+
+        deltaXEl.textContent =
+          formatNumber(deltaX);
+
+
+        deltaYEl.textContent =
+          formatNumber(deltaY);
+
+
+        slopeFormulaEl.textContent =
+          `m = (${formatNumber(y2)} − ${formatNumber(y1)}) / ` +
+          `(${formatNumber(x2)} − ${formatNumber(x1)}) = ` +
+          formatNumber(slope);
+
+
+        statusEl.textContent =
+          `Slope m = ${formatNumber(slope)}`;
+
+
+        // NEW:
+        // Update detailed calculations in left menu
+        updateCalculationSteps(
+          expression,
+          x1,
+          y1,
+          x2,
+          y2
+        );
+
+
+        render(resetViewport);
+
+      }
+      catch (error) {
+
+        errorEl.textContent =
+          error.message ||
+          "Unable to calculate the slope.";
+
+
+        statusEl.textContent =
+          "Calculation failed.";
+
+
+        currentFunction = null;
+
+        currentExpression = "";
+
+        resetCalculationSteps();
+
+        clearGraph();
+      }
+    }
+
+
+    // ============================================================
+    // ZOOM AROUND CURSOR
+    // ============================================================
+
+    function zoomAt(
+      factor,
+      clientX = null,
+      clientY = null
+    ) {
+
+      if (!viewport) {
+        return;
+      }
+
+
+      let anchor;
+
+
+      if (
+        clientX !== null &&
+        clientY !== null
+      ) {
+
+        anchor =
+          screenToWorld(
+            clientX,
+            clientY
+          );
+
+      }
+      else {
+
+        anchor = {
+          x:
+            (
+              viewport.xmin +
+              viewport.xmax
+            ) / 2,
+
+          y:
+            (
+              viewport.ymin +
+              viewport.ymax
+            ) / 2
+        };
+      }
+
+
+      const oldWidth =
+        viewport.xmax -
+        viewport.xmin;
+
+
+      const oldHeight =
+        viewport.ymax -
+        viewport.ymin;
+
+
+      let newWidth =
+        oldWidth * factor;
+
+
+      let newHeight =
+        oldHeight * factor;
+
+
+      newWidth =
+        Math.min(
+          Math.max(
+            newWidth,
+            0.0001
+          ),
+          1e8
+        );
+
+
+      newHeight =
+        Math.min(
+          Math.max(
+            newHeight,
+            0.0001
+          ),
+          1e8
+        );
+
+
+      const ratioX =
+        (
+          anchor.x -
+          viewport.xmin
+        ) /
+        oldWidth;
+
+
+      const ratioY =
+        (
+          anchor.y -
+          viewport.ymin
+        ) /
+        oldHeight;
+
+
+      const newXmin =
+        anchor.x -
+        ratioX *
+        newWidth;
+
+
+      const newXmax =
+        newXmin +
+        newWidth;
+
+
+      const newYmin =
+        anchor.y -
+        ratioY *
+        newHeight;
+
+
+      const newYmax =
+        newYmin +
+        newHeight;
+
+
+      viewport = {
+
+        xmin: newXmin,
+
+        xmax: newXmax,
+
+        ymin: newYmin,
+
+        ymax: newYmax
+      };
+
+
+      try {
+        render(false);
+      }
+      catch (error) {
+
+        errorEl.textContent =
+          error.message ||
+          "Unable to redraw graph.";
+      }
+    }
+
+
+    function zoomIn() {
+      zoomAt(0.75);
+    }
+
+
+    function zoomOut() {
+      zoomAt(1.3333333333);
+    }
+
+
+    // ============================================================
+    // FIT GRAPH
+    // ============================================================
+
+    function fitGraph() {
+
+      if (!currentFunction) {
+
+        calculate(true);
+
+        return;
+      }
+
+
+      try {
+        render(true);
+      }
+      catch (error) {
+
+        errorEl.textContent =
+          error.message ||
+          "Unable to fit graph.";
+      }
+    }
+
+
+    // ============================================================
+    // SWAP POINTS
+    // ============================================================
+
+    function swapPoints() {
+
+      const temp =
+        x1Input.value;
+
+
+      x1Input.value =
+        x2Input.value;
+
+
+      x2Input.value =
+        temp;
+
+
+      calculate(false);
+    }
+
+
+    // ============================================================
+    // BUTTON EVENTS
+    // ============================================================
+
+    calculateBtn.addEventListener(
+      "click",
+      () => calculate(true)
+    );
+
+
+    fitBtn.addEventListener(
+      "click",
+      () => fitGraph()
+    );
+
+
+    swapBtn.addEventListener(
+      "click",
+      () => swapPoints()
+    );
+
+
+    zoomInBtn.addEventListener(
+      "click",
+      () => zoomIn()
+    );
+
+
+    zoomOutBtn.addEventListener(
+      "click",
+      () => zoomOut()
+    );
+
+
+    // ============================================================
+    // ENTER KEY
+    // ============================================================
+
+    [
+      expressionInput,
+      x1Input,
+      x2Input
+    ].forEach(input => {
+
+      input.addEventListener(
+        "keydown",
+        event => {
+
+          if (event.key === "Enter") {
+            calculate(true);
+          }
+
+        }
+      );
+
+    });
+
+
+    // ============================================================
+    // MOUSE-WHEEL ZOOM
+    // ============================================================
+
+    svg.addEventListener(
+      "wheel",
+      event => {
+
+        event.preventDefault();
+
+
+        if (event.deltaY < 0) {
+
+          zoomAt(
+            0.85,
+            event.clientX,
+            event.clientY
+          );
+
+        } else {
+
+          zoomAt(
+            1.18,
+            event.clientX,
+            event.clientY
+          );
+
+        }
+
+      },
+      {
+        passive: false
+      }
+    );
+
+
+    // ============================================================
+    // PAN / DRAG
+    // ============================================================
+
+    let isPanning = false;
+
+    let panStart = {
+      x: 0,
+      y: 0
+    };
+
+    let panStartViewport = null;
+
+
+    svg.addEventListener(
+      "pointerdown",
+      event => {
+
+        if (!event.isPrimary) {
+          return;
+        }
+
+
+        if (!viewport) {
+          return;
+        }
+
+
+        isPanning = true;
+
+
+        panStart = {
+          x: event.clientX,
+          y: event.clientY
+        };
+
+
+        panStartViewport = {
+          xmin: viewport.xmin,
+          xmax: viewport.xmax,
+          ymin: viewport.ymin,
+          ymax: viewport.ymax
+        };
+
+
+        svg.classList.add(
+          "is-panning"
+        );
+
+
+        try {
+
+          svg.setPointerCapture(
+            event.pointerId
+          );
+
+        }
+        catch {}
+
+
+        event.preventDefault();
+      }
+    );
+
+
+    svg.addEventListener(
+      "pointermove",
+      event => {
+
+        if (!isPanning) {
+          return;
+        }
+
+
+        if (!panStartViewport) {
+          return;
+        }
+
+
+        const rect =
+          svg.getBoundingClientRect();
+
+
+        const dxPixels =
+          event.clientX -
+          panStart.x;
+
+
+        const dyPixels =
+          event.clientY -
+          panStart.y;
+
+
+        const worldWidth =
+          panStartViewport.xmax -
+          panStartViewport.xmin;
+
+
+        const worldHeight =
+          panStartViewport.ymax -
+          panStartViewport.ymin;
+
+
+        const dxWorld =
+          dxPixels /
+          rect.width *
+          worldWidth;
+
+
+        const dyWorld =
+          dyPixels /
+          rect.height *
+          worldHeight;
+
+
+        viewport = {
+
+          xmin:
+            panStartViewport.xmin -
+            dxWorld,
+
+          xmax:
+            panStartViewport.xmax -
+            dxWorld,
+
+          ymin:
+            panStartViewport.ymin +
+            dyWorld,
+
+          ymax:
+            panStartViewport.ymax +
+            dyWorld
+        };
+
+
+        try {
+          render(false);
+        }
+        catch (error) {
+
+          errorEl.textContent =
+            error.message ||
+            "Unable to redraw graph.";
+        }
+
+
+        event.preventDefault();
+      }
+    );
+
+
+    function stopPanning(event) {
+
+      if (!isPanning) {
+        return;
+      }
+
+
+      isPanning = false;
+
+      panStartViewport = null;
+
+      svg.classList.remove(
+        "is-panning"
+      );
+
+
+      if (
+        event &&
+        event.pointerId !== undefined
+      ) {
+
+        try {
+
+          if (
+            svg.hasPointerCapture(
+              event.pointerId
+            )
+          ) {
+
+            svg.releasePointerCapture(
+              event.pointerId
+            );
+          }
+
+        }
+        catch {}
+      }
+    }
+
+
+    svg.addEventListener(
+      "pointerup",
+      stopPanning
+    );
+
+
+    svg.addEventListener(
+      "pointercancel",
+      stopPanning
+    );
+
+
+    window.addEventListener(
+      "blur",
+      () => {
+
+        if (isPanning) {
+
+          isPanning = false;
+
+          panStartViewport = null;
+
+          svg.classList.remove(
+            "is-panning"
+          );
+        }
+      }
+    );
+
+
+    svg.addEventListener(
+      "contextmenu",
+      event => {
+
+        if (isPanning) {
+          event.preventDefault();
+        }
+      }
+    );
+
+
+    // ============================================================
+    // INITIAL GRAPH
+    // ============================================================
+
+    calculate(true);
+
+  </script>
+
+</body>
+</html>
