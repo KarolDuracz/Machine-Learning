@@ -7,7 +7,7 @@ List of files: <br />
 4. <b>Untitled - 27-09-2026 -graph of a function.ipynb</b> notebook file with code for this exercise.
 <br /> 
 <h3>Continuation for exercise 7-1 on the power rule</h3>
-Look at listing [57] in this .ipynb file. If we take examples from the nodes I calculated in Exercise 7-1, we get exactly this graph and the results for xs[70], f_m_d(xs[70]) --> (tensor(2.), tensor(12.)). By overlying both graphs, the points for both functions become visible much clear. 
+Look at listing [57] in this .ipynb file. If we take examples from the nodes I calculated in Exercise 7-1, we get exactly this graph and the results for xs[70], f_m_d(xs[70]) --> (tensor(2.), tensor(12.)). By overlying both graphs, the points for both functions become visible, much clearer why did I get a 12.0 for x00.grad in EX 7-1. 
 <br />
 
 ![dump](https://github.com/KarolDuracz/Machine-Learning/blob/main/7%20-%20micrograd%20exercises/2%20-%20exercise%20number%207-2/power%20rule%20plot.png?raw=true)
