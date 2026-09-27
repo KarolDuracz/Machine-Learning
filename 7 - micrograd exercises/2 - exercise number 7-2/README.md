@@ -19,6 +19,6 @@ Look at listing [57] in this .ipynb file. If we take examples from the nodes I c
 3. You can zoom in using the mouse wheel. <br />
 4. For the result regarding these two points, see Exercise 7-1.
 
-![dump](https://github.com/KarolDuracz/Machine-Learning/blob/main/7%20-%20micrograd%20exercises/2%20-%20exercise%20number%207-2/slope%20calc%20helper.png?raw=true)
+![dump](https://github.com/KarolDuracz/Machine-Learning/blob/main/7%20-%20micrograd%20exercises/2%20-%20exercise%20number%207-2/slope%20calc%20helper_.png?raw=true)
 
 // 27-09-2026
