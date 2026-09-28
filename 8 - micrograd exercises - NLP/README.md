@@ -16,3 +16,9 @@ But I’d like to do a few exercises using micrograd to better understand this a
 background in NLP itself and so on. Right now, I don't have enough skills to dive into that.
 <br /><br />
 // 27-09-2026 - This is the plan for the next exercises.
+
+<br /><br />
+<h3>A rough draft of thoughts...</h3>
+Using simple terminology and analogies. The `tanh(xw+b)` non-linear activation function allows certain "active" neurons to pass through. By plotting this layer and its values ​​(e.g., using `plt.plot`), we can visualize the distribution of values ​​after they have passed through the activation function. This simple model can only learn the statistics of the relationship between a context (e.g., 3 characters) and the next character (or token). The situation changes, however, when we introduce a time-based component much like a Transformer does. Transformers possess channels that not only measure (or learn) patterns as an MLP does, but also capture the token's position within the sequence. What is the benefit of this? Theoretically, similar tokens can occupy similar positions within a given context. Consider, for instance, comparing C++ with C, or C with Python. Tokens located at position 11 in the text might differ in name, but because the model also learns about their position within the context, it gains more information about the token itself even if their names differ and the text's semantics are different.
+<br /><br />
+It's worth checking out in that way and  break it down into pieces in these exercises.
