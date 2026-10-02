@@ -9,3 +9,7 @@ train a general base model that generalizes well and retains a multitude of patt
 In simple words: look at what was done in AlexNet and at the training set. Consider, too, where the LeNet and AlexNet networks get the ability to memorize a large number of patterns from that dataset. Where does that capacity come from?
 <br /><br />
 An LLM takes a slightly different approach because the Transformer attempts to predict the next token (word). I like the Ilya's analogy used in that interview (Fireside Chat With Ilya Sutskever and Jensen Huang: AI Today and Vision of the Future, March 2023). They are probably right about the analogy to crime novels and the "who committed the crime" question as a model task. And making increasingly accurate predictions implies that the model understands the subject matter of the text. It also seems to influence the model's IQ. However, the knowledge embedded in the network's internal connections isn't the whole story... But that approach really makes sense.
+<br /><br />
+"model's IQ?" - The greater the knowledge and the more information available, the more precise the answer and the better the predictions for the next word. This refers to the knowledge derived from the model's depth, its connections, its internal knowledge, and so on.
+<br /><br />
+That’s an interesting approach for me. But it’s just an outline of a plan, things I currently think are worth testing. 
