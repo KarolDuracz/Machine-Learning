@@ -131,6 +131,8 @@ btw. `one_hot` does something similar, it masks the other indices by setting the
 <br /><br />
 Next, the .log() values ​​are calculated, as can be seen further on in `s5 log tensor([2.9413, 2.6236], grad_fn=<NegBackward0>)`
 <br /><br />
+This can be quickly verified by inputting these numbers as a tensor and applying .log(). `torch.tensor(0.0528).log(), torch.tensor(0.0725).log()` --> `(tensor(-2.9412), tensor(-2.6242))`. That is why a `-` is added, so that these values ​​become positives `-torch.tensor(0.0528).log(), -torch.tensor(0.0725).log()`.
+<br /><br />
 Last result, after .mean() `loss tensor(2.7825, grad_fn=<NegBackward0>)`
 <br /><br />
 <b>Pay attention to the outputs from the node m5a and n10a</b>. Before the .log() operations, we see 0.0528 for n10a and 0.0725 for m5a. Then, the .log() operation is applied, yielding results that are subsequently processed via .mean(), resulting in a value of 2.7825 for these two classes on this simple model (graph).
