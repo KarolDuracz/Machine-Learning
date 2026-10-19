@@ -1,10 +1,87 @@
 <h3>About F.cross_entropy (PyTorch) vs micrograd</h3>
 
+The goal of this exercise is to create the simplest possible example that helps in understanding how `F.cross_entropy` works. This is equivalent to `CrossEntropyLoss()`.
+<br />
+1. https://docs.pytorch.org/docs/2.14/generated/torch.nn.functional.cross_entropy.html <br />
+2. https://docs.pytorch.org/docs/2.14/generated/torch.nn.CrossEntropyLoss.html#torch.nn.CrossEntropyLoss
+<br /><br />
+Here is an example of implementing cross-entropy from scratch https://gist.github.com/yang-zhang/217dcc6ae9171d7a46ce42e215c1fee0 . We obtain the same result as with `F.cross_entropy` or `CrossEntropyLoss()` .
+<h4>Step 1</h4>
+In `Untitled - 19-10-2026 - about F cross entropy loss function.ipynb` file, the first few code listings are, in fact, the execution of this comparison, taken from the Yang-Zhang notebook. The most important part of this is at the end: [18]`loss == F.cross_entropy(x, target)`
+evaluates to `True`
+, which means everything is correct the results from the raw implementation and `F.cross_entropy` are identical.
+<h4>Step 2</h4>
+Okay, let’s move on to listing [22], where I’ve added a few `print` statements to these functions so we can track what’s happening with these numbers, step by step. Next, I create a simple demo that constructs `xs`, consisting of two inputs, each containing a vector of 10 parameters. For each vector, two classes are defined as `ys`. I chose `torch.manual_seed(3409)` simply because the numbers look nice. <br /> <br />
+
+
+```
+torch.manual_seed(3409)
+
+xs = torch.randn(2,10, requires_grad=True)
+ys = torch.tensor([9,4])
+pred = softmax(xs)
+loss=nl(pred, ys)
+loss.backward()
+```
+
+Oputput
+
+```
+ raw  tensor([[ 0.2477,  2.1216, -0.2116,  0.4789, -0.4290,  1.0829,  1.6881, -0.7816,
+         -0.0902,  0.2235],
+        [-0.5434, -0.8391, -1.9117, -1.9223, -0.4209, -0.2874,  0.7715,  0.7912,
+          0.2874, -0.4553]], requires_grad=True)
+ exp  tensor([[1.2811, 8.3445, 0.8093, 1.6143, 0.6511, 2.9532, 5.4089, 0.4577, 0.9137,
+         1.2504],
+        [0.5808, 0.4321, 0.1478, 0.1463, 0.6565, 0.7502, 2.1630, 2.2060, 1.3330,
+         0.6342]], grad_fn=<ExpBackward0>)
+ sum  tensor(32.7341, grad_fn=<SumBackward0>)
+ sum(-1)  tensor([23.6842,  9.0499], grad_fn=<SumBackward1>)
+tensor([[23.6842],
+        [ 9.0499]], grad_fn=<UnsqueezeBackward0>)
+tensor([[0.0541, 0.3523, 0.0342, 0.0682, 0.0275, 0.1247, 0.2284, 0.0193, 0.0386,
+         0.0528],
+        [0.0642, 0.0477, 0.0163, 0.0162, 0.0725, 0.0829, 0.2390, 0.2438, 0.1473,
+         0.0701]], grad_fn=<DivBackward0>)
+input tensor([[0.0541, 0.3523, 0.0342, 0.0682, 0.0275, 0.1247, 0.2284, 0.0193, 0.0386,
+         0.0528],
+        [0.0642, 0.0477, 0.0163, 0.0162, 0.0725, 0.0829, 0.2390, 0.2438, 0.1473,
+         0.0701]], grad_fn=<DivBackward0>)
+target tensor([9, 4])
+range(0, 2)
+2
+ s3  tensor([0.0528, 0.0725], grad_fn=<IndexBackward0>)
+ s4 negative :  tensor([-0.0528, -0.0725], grad_fn=<NegBackward0>)
+ s5 log  tensor([2.9413, 2.6236], grad_fn=<NegBackward0>)
+loss tensor(2.7825, grad_fn=<NegBackward0>)
+```
+
+<h4>Step 3</h4>
+Ok, so we see `loss tensor(2.7825, grad_fn=<NegBackward0>)`. This is the value of this graph after performing this calculation and returning `cross_entropy`, which is equivalent to `F.cross_entropy` from PyTorch. Let's move to micrograd part. Starts from [29] listing. <br /><br />
+
+But I won't describe it step by step here, because anyone can look at the .ipynb file and follow the log. The calculation results for these graphs are important here. I did it manually because these graphs are more transparent. So in listing [41] where `loss1` is executed, we see the result below `Value(data=23.68459169376059, grad=1)`. This is the first branch.
+
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/2c6b702fb9cdf74cec56e3e2d0e159709e7e8e92/7%20-%20micrograd%20exercises/3%20-%20exercise%20number%207-3/branch1.svg)
+
+<br /><br />
+Second branch. Lising [40] and result `Value(data=9.05013542436278, grad=0)`. And after this as we see `loss2.backward()` in listing [42] and then `draw_dot(loss2)` in [43].
+
 
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/2c6b702fb9cdf74cec56e3e2d0e159709e7e8e92/7%20-%20micrograd%20exercises/3%20-%20exercise%20number%207-3/branch2.svg)
 
+<br /><br />
+<b>If we look up at that PyTorch log, we can see `sum(-1) tensor([23.6842, 9.0499], grad_fn=<SumBackward1>)` there.</b> These are the results for these 2 branches.
+<br /><br />
+And this is the first part that performs the `Softmax` function.
+<br /><br />
+If we add both values ​​together, the result is exactly `Value(data=32.734727118123374, grad=0)`, lisings [54], [55] . Then I call to `loss.backward()` and display graph in listings [56], [57]. And this is the result of combining both of these loss values ​​from each branch into one.
+
+
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/2c6b702fb9cdf74cec56e3e2d0e159709e7e8e92/7%20-%20micrograd%20exercises/3%20-%20exercise%20number%207-3/softmax.svg)
+
+This was the `Softmax` part
+
+<h4>Step 4</h4>
 
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/2c6b702fb9cdf74cec56e3e2d0e159709e7e8e92/7%20-%20micrograd%20exercises/3%20-%20exercise%20number%207-3/final_graph.svg)
 
