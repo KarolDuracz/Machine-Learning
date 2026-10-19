@@ -4,3 +4,4 @@
 <br /><br />
 <b>2 - exercise number 7-2 </b> - Continuation for exercise 7-1 plus helper for calculation deltas between two points of functions.
 <br /><br />
+<b>3 - exercise number 7-3 </b> - Small helper for F.cross_entropy function. 
