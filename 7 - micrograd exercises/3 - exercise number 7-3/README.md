@@ -79,10 +79,67 @@ If we add both values ​​together, the result is exactly `Value(data=32.73472
 
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/2c6b702fb9cdf74cec56e3e2d0e159709e7e8e92/7%20-%20micrograd%20exercises/3%20-%20exercise%20number%207-3/softmax.svg)
 
-This was the `Softmax` part
+This was the `Softmax` part -> `def softmax(x): return x.exp() / (x.exp().sum(-1)).unsqueeze(-1)`. Because we first calculate `pred`, which are then used by `nl`, as can be seen below.
+
+```
+def softmax(x): return x.exp() / (x.exp().sum(-1)).unsqueeze(-1)
+def nl(input, target): return -input[range(target.shape[0]), target].log().mean()
+
+pred = softmax(x)
+loss=nl(pred, target)
+loss
+```
 
 <h4>Step 4</h4>
 
+Ok, final part -> `def nl(input, target): return -input[range(target.shape[0]), target].log().mean()`
+<br /><br />
+So we get probs that start with `input tensor([[0.0541, 0.35... ` 
+
+```
+tensor([[0.0541, 0.3523, 0.0342, 0.0682, 0.0275, 0.1247, 0.2284, 0.0193, 0.0386,
+         0.0528],
+        [0.0642, 0.0477, 0.0163, 0.0162, 0.0725, 0.0829, 0.2390, 0.2438, 0.1473,
+         0.0701]], grad_fn=<DivBackward0>)
+input tensor([[0.0541, 0.3523, 0.0342, 0.0682, 0.0275, 0.1247, 0.2284, 0.0193, 0.0386,
+         0.0528],
+        [0.0642, 0.0477, 0.0163, 0.0162, 0.0725, 0.0829, 0.2390, 0.2438, 0.1473,
+         0.0701]], grad_fn=<DivBackward0>)
+target tensor([9, 4])
+range(0, 2)
+2
+ s3  tensor([0.0528, 0.0725], grad_fn=<IndexBackward0>)
+ s4 negative :  tensor([-0.0528, -0.0725], grad_fn=<NegBackward0>)
+ s5 log  tensor([2.9413, 2.6236], grad_fn=<NegBackward0>)
+loss tensor(2.7825, grad_fn=<NegBackward0>)
+```
+
+The classes are (hard coded) for example, as `target tensor([9, 4])`. You could choose any other numbers, but in this specific case, for this `xs`, they range from 0 to 9, totaling 10 classes. And it is easy to calculate only two classes by hand.
+<br /><br />
+So, `[9, 4]` are indices that correspond to, for example, embeddings that is, the vector for a given unique example. In this particular example, I am selecting 9 and 4.
+<br /><br />
+If we check this log again, we can see that for the first vector, index 9 contains `0.0528`. And the second vector, at position (index) 4, contains `0.0725`. `s3  tensor([0.0528, 0.0725], grad_fn=<IndexBackward0>)`
+
+```
+tensor([[0.0541, 0.3523, 0.0342, 0.0682, 0.0275, 0.1247, 0.2284, 0.0193, 0.0386,
+         0.0528],
+        [0.0642, 0.0477, 0.0163, 0.0162, 0.0725, 0.0829, 0.2390, 0.2438, 0.1473,
+         0.0701]], grad_fn=<DivBackward0>)
+```
+
+btw. `one_hot` does something similar, it masks the other indices by setting them to 0, while setting the selected index to 1.
+<br /><br />
+Next, the .log() values ​​are calculated, as can be seen further on in `s5 log tensor([2.9413, 2.6236], grad_fn=<NegBackward0>)`
+<br /><br />
+Last result, after .mean() `loss tensor(2.7825, grad_fn=<NegBackward0>)`
+<br /><br />
+<b>Pay attention to the outputs from the node m5a and n10a</b>. Before the .log() operations, we see 0.0528 for n10a and 0.0725 for m5a. Then, the .log() operation is applied, yielding results that are subsequently processed via .mean(), resulting in a value of 2.7825 for these two classes on this simple model (graph).
+
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/2c6b702fb9cdf74cec56e3e2d0e159709e7e8e92/7%20-%20micrograd%20exercises/3%20-%20exercise%20number%207-3/final_graph.svg)
 
+<h4>Step 5</h4>
 
+This is the same result as that calculated by the micrograd, for the entire `cross_entropy` graph, the value also comes out to 2.7825.
+
+<h3>Summary</h3>
+The goal is to build a simple "helper" for "Cross Entropy." This serves as an introduction to the exercises in *makemore* https://raw.githubusercontent.com/karpathy/makemore/refs/heads/master/makemore.py.
