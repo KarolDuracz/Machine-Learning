@@ -149,3 +149,5 @@ The same as `F.cross_entropy(xs,ys)` --> `tensor(2.7825, grad_fn=<NllLossBackwar
 The goal is to build a simple "helper" for "Cross Entropy." This serves as an introduction to the exercises in *makemore* https://raw.githubusercontent.com/karpathy/makemore/refs/heads/master/makemore.py.
 <br /><br />
 There are slight discrepancies compared to what is shown in the graphs. This is because I entered numbers into micrograd with a precision of 3 decimal places for example, `n1 = Value(0.2477, label = 'n1')` whereas the original number had higher precision: `0.24770359694957733`. Hence these differences.
+<br /><br />
+The third graph, with the value 32.734727118123374 from listing [57], likely contains accumulated gradients. But that’s fine. Take a look at the final graph. The gradients are calculated correctly there, and `n1.grad` is 0.0270, just as it should be.
