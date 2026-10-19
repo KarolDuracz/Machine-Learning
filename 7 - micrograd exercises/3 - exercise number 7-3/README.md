@@ -140,6 +140,8 @@ Last result, after .mean() `loss tensor(2.7825, grad_fn=<NegBackward0>)`
 <h4>Step 5</h4>
 
 This is the same result as that calculated by the micrograd, for the entire `cross_entropy` graph, the value also comes out to 2.7825.
+<br /><br />
+The same as `F.cross_entropy(xs,ys)` --> `tensor(2.7825, grad_fn=<NllLossBackward0>)`
 
 <h3>Summary</h3>
 The goal is to build a simple "helper" for "Cross Entropy." This serves as an introduction to the exercises in *makemore* https://raw.githubusercontent.com/karpathy/makemore/refs/heads/master/makemore.py.
