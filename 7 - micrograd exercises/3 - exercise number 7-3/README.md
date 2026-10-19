@@ -155,3 +155,7 @@ The third graph, with the value 32.734727118123374 from listing [57], likely con
 https://github.com/KarolDuracz/Machine-Learning/blob/main/7%20-%20micrograd%20exercises/3%20-%20exercise%20number%207-3/Untitled2%20-%2019-10-2026%20-%20torchviz.ipynb - `torchviz` for comparison. You can see that the first graph, the "raw" version looks different, but it yields the same result. The original `loss = F.cross_entropy(xs, ys)` involves `LogSoftmaxBackward0` and `NllLossBackward0`.
 <br /><br />
 ** Take another look at the numbers in the micrograd implementation that is, at n1, n2, ..., m1, m2... I made some typos, and some of the numbers are not exactly the same as those in `xs.data`. This is simply a copy-paste of these numbers from `x.data` into the containers of a `Value` object in micrograd.
+<h3>References</h3>
+1. https://www.geeksforgeeks.org/machine-learning/what-is-cross-entropy-loss-function/ - an interesting post about binary cross entropy.
+<br /><br />
+// 19-10-2026
