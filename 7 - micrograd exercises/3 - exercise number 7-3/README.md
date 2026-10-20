@@ -156,6 +156,14 @@ https://github.com/KarolDuracz/Machine-Learning/blob/main/7%20-%20micrograd%20ex
 <br /><br />
 ** Take another look at the numbers in the micrograd implementation that is, at n1, n2, ..., m1, m2... I made some typos, and some of the numbers are not exactly the same as those in `xs.data`. This is simply a copy-paste of these numbers from `x.data` into the containers of a `Value` object in micrograd.
 <h3>References</h3>
-1. https://www.geeksforgeeks.org/machine-learning/what-is-cross-entropy-loss-function/ - an interesting post about binary cross entropy.
+1. https://www.geeksforgeeks.org/machine-learning/what-is-cross-entropy-loss-function/ - an interesting post about binary cross entropy. <br />
+2. https://zhang-yang.medium.com/table-of-cross-entropy-loss-at-different-probabilities-3ec9f47b3b96 - The core concept (idea), illustrated by the table, concerns the calculation of probabilities for instance, for classes such as `{“apple”: 0.7, “orange”: 0.2, “onion”: 0.1}`.
 <br /><br />
 // 19-10-2026
+<br /><br />
+<h3>One last thing here</h3>
+https://github.com/KarolDuracz/Machine-Learning/blob/main/7%20-%20micrograd%20exercises/3%20-%20exercise%20number%207-3/Untitled7%20-%2020-10-2026%20-%20some%20tests.ipynb - Go to this file and scroll down to the end, to listing [210], where the comment "# USING CODE API functions ..." begins. I re-copied these values ​​from `xs`, and in listing [200], a test begins after the comment "# with 2 branches". The first test generates results for `final_loss = loss_fn(loss(xs), torch.tensor([9, 4]))` (see listing [222]). In listing [225], you can see `xs.grad`, which is identical to the output from micrograd. The second test "# test - whether an exception is thrown if the index is out of bounds" verifies that the function behaves the same way as a raw implementation of `cross_entropy`. It should raise an exception if an index is referenced that exceeds the range of available choices, resulting in `IndexError: Target 10 is out of bounds.`. And that is exactly what happens. In this case, one can only select classes in the 0–9 range. Until the moment if we do not increase the vector and the number of classes.
+<br /><br />
+In short. I checked the graph and the result using the PyTorch API functions `nn.NLLLoss()` and `torch.nn.LogSoftmax(dim=1)` which corresponds to what `graphviz` showed for the execution of `F.cross_entropy`.
+<br /><br />
+// 20-10-2026
