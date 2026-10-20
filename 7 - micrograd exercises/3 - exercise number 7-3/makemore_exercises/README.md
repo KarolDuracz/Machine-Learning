@@ -43,7 +43,7 @@ def nl(input, target):
             print(col_idx, "negative")
         elif t != -1:
             print(col_idx, " to arr ")
-            arr.append(-input[col_idx].log().mean())
+            arr.append(-input[col_idx][t.item()].log().mean())
         col_idx += 1
 
     s3 = input[range(target.shape[0]), target]
