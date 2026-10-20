@@ -132,4 +132,6 @@ I’ve reduced the `batch_size` to `1`. Using an API that loads mini-batches for
 <br /><br />
 The goal was to examine these differences in loss values: `tensor(3.3278, grad_fn=<NllLossBackward0>) tensor(3.0073, grad_fn=<NegBackward0>) tensor(3.3278, grad_fn=<NllLossBackward0>)`
 <br /><br />
+<b>This causes confusion. But look at `s5 log  tensor([2.7172, 3.0128, 3.9272, 4.2643, 2.9752, 3.8878, 2.8103, 3.0280])` and now go back to the previous exercise from *micrograd*, where I also calculated the `.mean()` for `s5 log  tensor([2.9413, 2.6236], grad_fn=<NegBackward0>)`.</b> 
+<br /><br />
 // 20-10-2026
