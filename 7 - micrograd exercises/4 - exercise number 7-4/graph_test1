@@ -1,0 +1,98 @@
+digraph {
+	graph [nodesep=0.1 rankdir=LR ranksep=0.4]
+	54910419342 [label="{  | data 15.6535 | grad 1.0000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419342+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419342+" -> 54910419342
+	54910443290 [label="{ n7 | data 1.6881 | grad 5.4092 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419099 [label="{  | data 10.4348 | grad 1.0000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419099+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419099+" -> 54910419099
+	54909964698 [label="{ n8a | data 0.4577 | grad 1.0000 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54909964698exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54909964698exp" -> 54909964698
+	54910411805 [label="{ n10a | data 1.2504 | grad 1.0000 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910411805exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910411805exp" -> 54910411805
+	54910419102 [label="{  | data 21.5204 | grad 1.0000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419102+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419102+" -> 54910419102
+	54910335647 [label="{  | data 9.6256 | grad 1.0000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910335647+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910335647+" -> 54910335647
+	54910419366 [label="{  | data 12.7003 | grad 1.0000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419366+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419366+" -> 54910419366
+	54910407078 [label="{ n3a | data 0.8093 | grad 1.0000 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910407078exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910407078exp" -> 54910407078
+	54910443311 [label="{ n5a | data 0.6512 | grad 1.0000 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910443311exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910443311exp" -> 54910443311
+	54910443314 [label="{ n5 | data -0.4290 | grad 0.6512 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910443449 [label="{ n10 | data 0.2235 | grad 1.2504 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419009 [label="{  | data 21.0627 | grad 1.0000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419009+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419009+" -> 54910419009
+	54910443206 [label="{ n6 | data 1.0829 | grad 2.9532 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910443215 [label="{ n7a | data 5.4092 | grad 1.0000 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910443215exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910443215exp" -> 54910443215
+	54910443344 [label="{ n2 | data 2.1216 | grad 8.3445 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910443473 [label="{ n4 | data 0.4789 | grad 1.6143 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910407255 [label="{ n2a | data 8.3445 | grad 1.0000 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910407255exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910407255exp" -> 54910407255
+	54910443224 [label="{ n9 | data -0.0902 | grad 0.9137 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910407003 [label="{ n1a | data 1.2811 | grad 1.0000 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910407003exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910407003exp" -> 54910407003
+	54910443227 [label="{ n6a | data 2.9532 | grad 1.0000 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910443227exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910443227exp" -> 54910443227
+	54910443230 [label="{ n3 | data -0.2116 | grad 0.8093 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910443359 [label="{ n1 | data 0.2477 | grad 1.2811 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419042 [label="{ loss1 | data 23.6846 | grad 1.0000 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419042+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419042+" -> 54910419042
+	54910412774 [label="{ n9a | data 0.9137 | grad 1.0000 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910412774exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910412774exp" -> 54910412774
+	54910419174 [label="{  | data 12.0491 | grad 1.0000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419174+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419174+" -> 54910419174
+	54910443251 [label="{ n8 | data -0.7816 | grad 0.4577 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419060 [label="{  | data 22.4341 | grad 1.0000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419060+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419060+" -> 54910419060
+	54910407288 [label="{ n4a | data 1.6143 | grad 1.0000 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910407288exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910407288exp" -> 54910407288
+	54910443473 -> "54910407288exp"
+	54910419366 -> "54910419342+"
+	54910443359 -> "54910407003exp"
+	54910407255 -> "54910335647+"
+	54910443290 -> "54910443215exp"
+	54910419342 -> "54910419009+"
+	54910443230 -> "54910407078exp"
+	54909964698 -> "54910419102+"
+	54910443449 -> "54910411805exp"
+	54910443206 -> "54910443227exp"
+	54910443344 -> "54910407255exp"
+	54910443215 -> "54910419009+"
+	54910419060 -> "54910419042+"
+	54910419174 -> "54910419366+"
+	54910419102 -> "54910419060+"
+	54910412774 -> "54910419060+"
+	54910419099 -> "54910419174+"
+	54910407003 -> "54910335647+"
+	54910443251 -> "54909964698exp"
+	54910443314 -> "54910443311exp"
+	54910443311 -> "54910419366+"
+	54910411805 -> "54910419042+"
+	54910443227 -> "54910419342+"
+	54910407078 -> "54910419099+"
+	54910335647 -> "54910419099+"
+	54910407288 -> "54910419174+"
+	54910443224 -> "54910412774exp"
+	54910419009 -> "54910419102+"
+}

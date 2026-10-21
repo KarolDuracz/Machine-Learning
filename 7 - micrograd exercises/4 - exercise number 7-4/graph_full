@@ -1,0 +1,236 @@
+digraph {
+	graph [nodesep=0.1 rankdir=LR ranksep=0.4]
+	54910460032 [label="{  | data 1.1607 | grad 0.0552 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460032+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910460032+" -> 54910460032
+	54910419714 [label="{ m10 | data -0.4550 | grad 0.0351 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419717 [label="{ n1a | data 1.2811 | grad 0.0211 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419717exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419717exp" -> 54910419717
+	54910419849 [label="{  | data 10.4348 | grad 0.0211 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419849+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419849+" -> 54910419849
+	54910419723 [label="{ m2a | data 0.4321 | grad 0.0552 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419723exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419723exp" -> 54910419723
+	54910419726 [label="{ m1a | data 0.5808 | grad 0.0552 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419726exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419726exp" -> 54910419726
+	54910459921 [label="{ m4a | data 0.1463 | grad 0.0552 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910459921exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910459921exp" -> 54910459921
+	54910460050 [label="{  | data 1.3070 | grad 0.0552 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460050+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910460050+" -> 54910460050
+	54910419735 [label="{ n2a | data 8.3445 | grad 0.0211 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419735exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419735exp" -> 54910419735
+	54910419354 [label="{ n4 | data 0.4789 | grad 0.0341 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910459933 [label="{ m5a | data 0.6565 | grad -0.7064 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910459933exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910459933exp" -> 54910459933
+	54910419741 [label="{ n3a | data 0.8093 | grad 0.0211 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419741exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419741exp" -> 54910419741
+	54910459936 [label="{ m3a | data 0.1478 | grad 0.0552 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910459936exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910459936exp" -> 54910459936
+	54910460068 [label="{  | data 1.9635 | grad 0.0552 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460068+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910460068+" -> 54910460068
+	54910460452 [label="{  | data 0.0422 | grad -11.8423 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460452**-1" [label="**-1" fontsize=10 height=0.1 width=0.1]
+	"54910460452**-1" -> 54910460452
+	54910419876 [label="{  | data 12.0491 | grad 0.0211 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419876+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419876+" -> 54910419876
+	54910419750 [label="{ n4a | data 1.6143 | grad 0.0211 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419750exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419750exp" -> 54910419750
+	54910419111 [label="{ n7a | data 5.4092 | grad 0.0211 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419111exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419111exp" -> 54910419111
+	54910460587 [label="{  | data 0.1105 | grad -4.5251 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460587**-1" [label="**-1" fontsize=10 height=0.1 width=0.1]
+	"54910460587**-1" -> 54910460587
+	54910419627 [label="{ n7 | data 1.6881 | grad 0.1142 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910460080 [label="{  | data 2.7137 | grad 0.0552 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460080+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910460080+" -> 54910460080
+	54910459954 [label="{ m6a | data 0.7502 | grad 0.0552 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910459954exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910459954exp" -> 54910459954
+	54910419378 [label="{ m1 | data -0.5434 | grad 0.0321 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910460467 [label="{  | data 0.0528 | grad -9.4705 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460467*" [label="*" fontsize=10 height=0.1 width=0.1]
+	"54910460467*" -> 54910460467
+	54910419765 [label="{ n5a | data 0.6512 | grad 0.0211 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419765exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419765exp" -> 54910419765
+	54910419894 [label="{  | data 12.7003 | grad 0.0211 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419894+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419894+" -> 54910419894
+	54910419381 [label="{ n5 | data -0.4290 | grad 0.0137 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910460602 [label="{  | data 0.0725 | grad -6.8932 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460602*" [label="*" fontsize=10 height=0.1 width=0.1]
+	"54910460602*" -> 54910460602
+	54910459963 [label="{ m7a | data 2.1630 | grad 0.0552 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910459963exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910459963exp" -> 54910459963
+	54910419519 [label="{ n6a | data 2.9532 | grad 0.0211 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419519exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419519exp" -> 54910419519
+	54910460098 [label="{  | data 4.8767 | grad 0.0552 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460098+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910460098+" -> 54910460098
+	54910443203 [label="{ n2 | data 2.1216 | grad 0.1762 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910443461 [label="{ n1 | data 0.2477 | grad 0.0270 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910460743 [label="{  | data -2.9413 | grad -0.5000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460743log" [label=log fontsize=10 height=0.1 width=0.1]
+	"54910460743log" -> 54910460743
+	54910459978 [label="{ m8a | data 2.2060 | grad 0.0552 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910459978exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910459978exp" -> 54910459978
+	54910419915 [label="{  | data 15.6535 | grad 0.0211 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419915+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419915+" -> 54910419915
+	54910460752 [label="{  | data -2.6237 | grad -0.5000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460752log" [label=log fontsize=10 height=0.1 width=0.1]
+	"54910460752log" -> 54910460752
+	54910459987 [label="{ m9a | data 1.3330 | grad 0.0552 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910459987exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910459987exp" -> 54910459987
+	54910460116 [label="{  | data 7.0827 | grad 0.0552 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460116+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910460116+" -> 54910460116
+	54910419798 [label="{ n9a | data 0.9137 | grad 0.0211 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419798exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419798exp" -> 54910419798
+	54910419801 [label="{ n10a | data 1.2504 | grad -0.3787 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419801exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419801exp" -> 54910419801
+	54910460764 [label="{  | data -5.5650 | grad -0.5000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460764+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910460764+" -> 54910460764
+	54910419420 [label="{ m2 | data -0.8391 | grad 0.0239 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910460128 [label="{  | data 8.4157 | grad 0.0552 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460128+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910460128+" -> 54910460128
+	54910419936 [label="{  | data 21.0627 | grad 0.0211 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419936+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419936+" -> 54910419936
+	54910460002 [label="{ m10a | data 0.6344 | grad 0.0552 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460002exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910460002exp" -> 54910460002
+	54910419681 [label="{ n3 | data -0.2116 | grad 0.0171 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419684 [label="{ m3 | data -1.9117 | grad 0.0082 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419555 [label="{ n9 | data -0.0902 | grad 0.0193 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419687 [label="{ m4 | data -1.9220 | grad 0.0081 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910460776 [label="{  | data -1.0000 | grad -2.7825 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419561 [label="{ n8 | data -0.7816 | grad 0.0097 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910460779 [label="{  | data 5.5650 | grad 0.5000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460779*" [label="*" fontsize=10 height=0.1 width=0.1]
+	"54910460779*" -> 54910460779
+	54910419948 [label="{  | data 21.5204 | grad 0.0211 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419948+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419948+" -> 54910419948
+	54910419693 [label="{ m5 | data -0.4209 | grad -0.4637 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419822 [label="{  | data 9.6256 | grad 0.0211 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419822+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419822+" -> 54910419822
+	54910419183 [label="{ n8a | data 0.4577 | grad 0.0211 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419183exp" [label=exp fontsize=10 height=0.1 width=0.1]
+	"54910419183exp" -> 54910419183
+	54910419696 [label="{ m6 | data -0.2874 | grad 0.0414 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910460791 [label="{  | data 0.5000 | grad 5.5650 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910460146 [label="{ loss2 | data 9.0501 | grad 0.0552 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460146+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910460146+" -> 54910460146
+	54910419699 [label="{ m7 | data 0.7715 | grad 0.1195 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910460020 [label="{  | data 1.0129 | grad 0.0552 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460020+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910460020+" -> 54910460020
+	54910419570 [label="{ n10 | data 0.2235 | grad -0.4736 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419702 [label="{ m8 | data 0.7912 | grad 0.1219 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419573 [label="{ loss1 | data 23.6846 | grad 0.0211 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419573+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419573+" -> 54910419573
+	54910460794 [label="{  | data 2.7825 | grad 1.0000 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910460794*" [label="*" fontsize=10 height=0.1 width=0.1]
+	"54910460794*" -> 54910460794
+	54910419963 [label="{  | data 22.4341 | grad 0.0211 }" fillcolor=white fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	"54910419963+" [label="+" fontsize=10 height=0.1 width=0.1]
+	"54910419963+" -> 54910419963
+	54910419708 [label="{ m9 | data 0.2874 | grad 0.0736 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910419582 [label="{ n6 | data 1.0829 | grad 0.0623 }" fillcolor=yellow fontsize=10 height=0.1 shape=record style=filled width=0.1]
+	54910460128 -> "54910460146+"
+	54910460587 -> "54910460602*"
+	54910419570 -> "54910419801exp"
+	54910419948 -> "54910419963+"
+	54910419681 -> "54910419741exp"
+	54910419573 -> "54910460452**-1"
+	54910460050 -> "54910460068+"
+	54910419699 -> "54910459963exp"
+	54910459978 -> "54910460116+"
+	54910460752 -> "54910460764+"
+	54910459987 -> "54910460128+"
+	54910460743 -> "54910460764+"
+	54910460032 -> "54910460050+"
+	54910419726 -> "54910460020+"
+	54910419798 -> "54910419963+"
+	54910419708 -> "54910459987exp"
+	54910460776 -> "54910460779*"
+	54910419963 -> "54910419573+"
+	54910419627 -> "54910419111exp"
+	54910419894 -> "54910419915+"
+	54910419111 -> "54910419936+"
+	54910459933 -> "54910460602*"
+	54910459933 -> "54910460068+"
+	54910460002 -> "54910460146+"
+	54910460467 -> "54910460743log"
+	54910419717 -> "54910419822+"
+	54910419687 -> "54910459921exp"
+	54910419936 -> "54910419948+"
+	54910460146 -> "54910460587**-1"
+	54910460791 -> "54910460794*"
+	54910460116 -> "54910460128+"
+	54910443461 -> "54910419717exp"
+	54910419723 -> "54910460020+"
+	54910419876 -> "54910419894+"
+	54910419696 -> "54910459954exp"
+	54910419849 -> "54910419876+"
+	54910460098 -> "54910460116+"
+	54910460080 -> "54910460098+"
+	54910419741 -> "54910419849+"
+	54910460020 -> "54910460032+"
+	54910419714 -> "54910460002exp"
+	54910460452 -> "54910460467*"
+	54910419381 -> "54910419765exp"
+	54910419561 -> "54910419183exp"
+	54910419801 -> "54910460467*"
+	54910419750 -> "54910419876+"
+	54910459936 -> "54910460032+"
+	54910419420 -> "54910419723exp"
+	54910419183 -> "54910419948+"
+	54910459921 -> "54910460050+"
+	54910460764 -> "54910460779*"
+	54910419519 -> "54910419915+"
+	54910459963 -> "54910460098+"
+	54910419801 -> "54910419573+"
+	54910419822 -> "54910419849+"
+	54910419702 -> "54910459978exp"
+	54910419555 -> "54910419798exp"
+	54910419354 -> "54910419750exp"
+	54910419378 -> "54910419726exp"
+	54910459954 -> "54910460080+"
+	54910419693 -> "54910459933exp"
+	54910419915 -> "54910419936+"
+	54910419765 -> "54910419894+"
+	54910460779 -> "54910460794*"
+	54910419684 -> "54910459936exp"
+	54910443203 -> "54910419735exp"
+	54910460068 -> "54910460080+"
+	54910460602 -> "54910460752log"
+	54910419582 -> "54910419519exp"
+	54910419735 -> "54910419822+"
+}
