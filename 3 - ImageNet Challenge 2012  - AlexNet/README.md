@@ -24,4 +24,14 @@ Description of tasks
 
 ![dump](https://github.com/KarolDuracz/Machine-Learning/blob/main/images/434%20-%2021-04-2026%20-%20%202012%20imagenet%20competition.png?raw=true)
 
-
+<br /><br />
+<hr>
+<br /><br />
+For informational purposes only. To see the original implementation and techniques (code).
+<br /><br />
+<h3>AlexNet-Source-Code Public</h3>
+https://github.com/computerhistory/AlexNet-Source-Code/tree/main
+<br /><br />
+https://code.google.com/archive/p/cuda-convnet/
+<br /><br />
+https://docs.pytorch.org/vision/main/_modules/torchvision/models/alexnet.html
