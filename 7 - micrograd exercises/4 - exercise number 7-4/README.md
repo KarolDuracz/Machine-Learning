@@ -265,4 +265,6 @@ An additional graph after step 4, as we can see above in `xs.data`, the value `0
 <br />
 The goal is to understand how to interpret this and whether it’s actually useful, or how to use it correctly for analysis.
 <br /><br />
+I think that for a larger number of steps or for bigger models, more than the dozen of parameters seen here, this type of graph would no longer be effective. however, breaking down smaller components and tracing the calculations and connections (branches) can be quite useful.
+<br /><br />
 // 22-10-2026
