@@ -38,3 +38,76 @@ tensor([[1.2811, 8.3445, 0.8093, 1.6143, 0.6511, 2.9532, 5.4089, 0.4577, 0.9...
 
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/073264e91719333298e66a9e932a58115ad2bee9/7%20-%20micrograd%20exercises/4%20-%20exercise%20number%207-4/graph_full.svg)
 
+<br /><br />
+
+<h4>Now, the main part, where I will perform a forward pass for a few steps, let's say, 2 or 3 to trace what emerges between the connections, much like the process of taking a few steps in the simple example from Ex 7-1. Power rule demo. </h4>
+First of all, that’s why I loaded a clean notebook and didn’t execute the code immediately, instead I modified it to save the SVG file to disk, so I could get a clear picture of what was going on. Now I will perform a forward pass (in the cells containing the forward pass code) on local computer, and simply provide the logs here, along with a description and an SVG image.
+<br /><br />
+
+1. I’ll start with listing [12], which shows the micrograd version for `branch 1`, `loss`, and `Value(data=23.68459169376059, grad=1)` . Now I will generate a graph and save it to disk by executing `draw_dot(loss1)`.
+2. Next, perform the same steps for PyTorch, as shown in listing [18] - [23].
+3. As I wrote above, the logs from [21] (PyTorch version) now display the values ​​after `exp()`, showing: `tensor([[1.2811, 8.3445, 0.8093, 1.6143, 0.6511,...`. These correspond, in order, to `n1a`, `n2a`, `n3a`, etc.
+4. Next `raw` , the values ​​shown above, starting from `tensor([[ 0.2477,  2.1216, -0.2116,  0.4789, -0.4290,  1.0829,...` correspond to `n1`, `n2`, and so on.
+
+```
+raw
+tensor([[ 0.2477,  2.1216, -0.2116,  0.4789, -0.4290,  1.0829,  1.6881, -0.7816,
+         -0.0902,  0.2235],
+        [-0.5434, -0.8391, -1.9117, -1.9223, -0.4209, -0.2874,  0.7715,  0.7912,
+          0.2874, -0.4553]], requires_grad=True)
+ after exp() 
+tensor([[1.2811, 8.3445, 0.8093, 1.6143, 0.6511, 2.9532, 5.4089, 0.4577, 0.9137,
+         1.2504],
+        [0.5808, 0.4321, 0.1478, 0.1463, 0.6565, 0.7502, 2.1630, 2.2060, 1.3330,
+         0.6342]], grad_fn=<ExpBackward0>)
+tensor([23.6842,  9.0499], grad_fn=<SumBackward1>)
+```
+
+![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/508ba2655a07736c5627db3ba12f1bbf4df11be5/7%20-%20micrograd%20exercises/4%20-%20exercise%20number%207-4/graph_branch1_step1.svg)
+
+5. In listing [23], we can see the values ​​that will reside in the intermediate nodes, for instance, the value `-0.0085` at index 0 will be located between `n1` and `n1a`.
+
+```
+tensor([[-0.0085,  0.4527, -0.3735,  0.1560, -0.5593,  0.4923,  0.6063, -0.8731,
+         -0.2730, -0.0266],
+        [-0.5434, -0.8391, -1.9117, -1.9223, -0.4209, -0.2874,  0.7715,  0.7912,
+          0.2874, -0.4553]])
+```
+
+6. Let's check. First, the PyTorch [21] forward pass to get the loss (step 2). The result is `tensor([10.6150, 9.0499], grad_fn=<SumBackward1>)`.
+7. Then go to [13] and do forward, and [14] to get graph. ( micrograd )
+
+![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/47966d9cb3ab004fc8baeaee1054c4b0548139da/7%20-%20micrograd%20exercises/4%20-%20exercise%20number%207-4/graph_branch1_step2.svg)
+
+8. Between the yellow `n1` on the left and `n1a`, there is a new white node that contains `-0.0085`.
+9. Okay, next step (step 3). Same thing. First, the forward pass for the PyTorch version. Cell [21].
+10. But don't execute [23] yet, where `xs.data` is. Those values ​​should be there.
+
+```
+tensor([[-0.2068,  0.1382, -0.5112, -0.0777, -0.6736,  0.1651,  0.2396, -0.9566,
+         -0.4252, -0.2213],
+        [-0.5434, -0.8391, -1.9117, -1.9223, -0.4209, -0.2874,  0.7715,  0.7912,
+          0.2874, -0.4553]])
+```
+
+11. Step 3 ( pytorch ) loss `tensor([8.2856, 9.0499], grad_fn=<SumBackward1>)` and logs
+
+```
+raw
+tensor([[-0.2068,  0.1382, -0.5112, -0.0777, -0.6736,  0.1651,  0.2396, -0.9566,
+         -0.4252, -0.2213],
+        [-0.5434, -0.8391, -1.9117, -1.9223, -0.4209, -0.2874,  0.7715,  0.7912,
+          0.2874, -0.4553]], requires_grad=True)
+ after exp() 
+tensor([[0.8132, 1.1482, 0.5998, 0.9252, 0.5099, 1.1795, 1.2707, 0.3842, 0.6536,
+         0.8014],
+        [0.5808, 0.4321, 0.1478, 0.1463, 0.6565, 0.7502, 2.1630, 2.2060, 1.3330,
+         0.6342]], grad_fn=<ExpBackward0>)
+tensor([8.2856, 9.0499], grad_fn=<SumBackward1>)
+```
+
+12. Now, the same steps for micrograd—that is, once again, the forward pass [13] and [14].
+
+![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/d98de853c2450cf03b932460edac1d5b682a37ad/7%20-%20micrograd%20exercises/4%20-%20exercise%20number%207-4/graph_branch1_step3.svg)
+
+13. After `step 3`, we can see two columns between `n1` and `n1a`, starting from `n1` on the left, there is `data -0.0085`, followed by `data -0.2068`, and then `n1a` with `data 0.8132`. Once again, the intermediate values ​​appear in `xs.data` after the forward pass in the PyTorch version. In other words, by looking one step ahead, you can see what the intermediate values ​​in `micrograd` will be. <b>This might be valuable information.</b> ?!
