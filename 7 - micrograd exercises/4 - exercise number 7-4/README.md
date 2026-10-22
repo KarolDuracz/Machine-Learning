@@ -111,3 +111,145 @@ tensor([8.2856, 9.0499], grad_fn=<SumBackward1>)
 ![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/d98de853c2450cf03b932460edac1d5b682a37ad/7%20-%20micrograd%20exercises/4%20-%20exercise%20number%207-4/graph_branch1_step3.svg)
 
 13. After `step 3`, we can see two columns between `n1` and `n1a`, starting from `n1` on the left, there is `data -0.0085`, followed by `data -0.2068`, and then `n1a` with `data 0.8132`. Once again, the intermediate values ​​appear in `xs.data` after the forward pass in the PyTorch version. In other words, by looking one step ahead, you can see what the intermediate values ​​in `micrograd` will be. <b>This might be valuable information.</b> ?!
+
+<br /><br />
+
+<h4>Okay, it’s time to do the same exercise for 3 steps using `cross entropy`. </h4>
+
+1. So, once again, starting with the PyTorch version, we have the initialization in [27], followed by the forward pass in [29]. In [32], I display the loss. After step 1 the value is `tensor(2.7825, grad_fn=<NegBackward0>)`
+2. Next, micrograd from [33]; [34] covers initialization, [35] the forward pass, [36] the loss, and [37] generating the graph to a file.
+3. The same steps as before.
+
+<b>Step 1.</b>
+
+![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/26cef26c6e4d2e3f3f72c6c37814e0843bdb8ae2/7%20-%20micrograd%20exercises/4%20-%20exercise%20number%207-4/graph_ce_step1.svg)
+
+```
+ raw  tensor([[ 0.2477,  2.1216, -0.2116,  0.4789, -0.4290,  1.0829,  1.6881, -0.7816,
+         -0.0902,  0.2235],
+        [-0.5434, -0.8391, -1.9117, -1.9223, -0.4209, -0.2874,  0.7715,  0.7912,
+          0.2874, -0.4553]], requires_grad=True)
+ exp  tensor([[1.2811, 8.3445, 0.8093, 1.6143, 0.6511, 2.9532, 5.4089, 0.4577, 0.9137,
+         1.2504],
+        [0.5808, 0.4321, 0.1478, 0.1463, 0.6565, 0.7502, 2.1630, 2.2060, 1.3330,
+         0.6342]], grad_fn=<ExpBackward0>)
+ sum  tensor(32.7341, grad_fn=<SumBackward0>)
+ sum(-1)  tensor([23.6842,  9.0499], grad_fn=<SumBackward1>)
+tensor([[23.6842],
+        [ 9.0499]], grad_fn=<UnsqueezeBackward0>)
+tensor([[0.0541, 0.3523, 0.0342, 0.0682, 0.0275, 0.1247, 0.2284, 0.0193, 0.0386,
+         0.0528],
+        [0.0642, 0.0477, 0.0163, 0.0162, 0.0725, 0.0829, 0.2390, 0.2438, 0.1473,
+         0.0701]], grad_fn=<DivBackward0>)
+input tensor([[0.0541, 0.3523, 0.0342, 0.0682, 0.0275, 0.1247, 0.2284, 0.0193, 0.0386,
+         0.0528],
+        [0.0642, 0.0477, 0.0163, 0.0162, 0.0725, 0.0829, 0.2390, 0.2438, 0.1473,
+         0.0701]], grad_fn=<DivBackward0>)
+target tensor([9, 4])
+range(0, 2)
+2
+ s3  tensor([0.0528, 0.0725], grad_fn=<IndexBackward0>)
+ s4 negative :  tensor([-0.0528, -0.0725], grad_fn=<NegBackward0>)
+ s5 log  tensor([2.9413, 2.6236], grad_fn=<NegBackward0>)
+loss tensor(2.7825, grad_fn=<NegBackward0>)
+```
+
+`xs.data` is now in [30]!
+
+```
+tensor([[ 0.2423,  2.0864, -0.2151,  0.4721, -0.4318,  1.0704,  1.6652, -0.7835,
+         -0.0941,  0.3182],
+        [-0.5498, -0.8439, -1.9134, -1.9239, -0.3281, -0.2957,  0.7476,  0.7668,
+          0.2727, -0.4623]])
+```
+
+<b>Step 2</b>
+
+![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/26cef26c6e4d2e3f3f72c6c37814e0843bdb8ae2/7%20-%20micrograd%20exercises/4%20-%20exercise%20number%207-4/graph_ce_step2.svg)
+
+```
+raw  tensor([[ 0.2423,  2.0864, -0.2151,  0.4721, -0.4318,  1.0704,  1.6652, -0.7835,
+         -0.0941,  0.3182],
+        [-0.5498, -0.8439, -1.9134, -1.9239, -0.3281, -0.2957,  0.7476,  0.7668,
+          0.2727, -0.4623]], requires_grad=True)
+ exp  tensor([[1.2742, 8.0556, 0.8065, 1.6033, 0.6494, 2.9166, 5.2868, 0.4568, 0.9102,
+         1.3747],
+        [0.5771, 0.4300, 0.1476, 0.1460, 0.7203, 0.7440, 2.1119, 2.1529, 1.3135,
+         0.6298]], grad_fn=<ExpBackward0>)
+ sum  tensor(32.3071, grad_fn=<SumBackward0>)
+ sum(-1)  tensor([23.3340,  8.9731], grad_fn=<SumBackward1>)
+tensor([[23.3340],
+        [ 8.9731]], grad_fn=<UnsqueezeBackward0>)
+tensor([[0.0546, 0.3452, 0.0346, 0.0687, 0.0278, 0.1250, 0.2266, 0.0196, 0.0390,
+         0.0589],
+        [0.0643, 0.0479, 0.0164, 0.0163, 0.0803, 0.0829, 0.2354, 0.2399, 0.1464,
+         0.0702]], grad_fn=<DivBackward0>)
+input tensor([[0.0546, 0.3452, 0.0346, 0.0687, 0.0278, 0.1250, 0.2266, 0.0196, 0.0390,
+         0.0589],
+        [0.0643, 0.0479, 0.0164, 0.0163, 0.0803, 0.0829, 0.2354, 0.2399, 0.1464,
+         0.0702]], grad_fn=<DivBackward0>)
+target tensor([9, 4])
+range(0, 2)
+2
+ s3  tensor([0.0589, 0.0803], grad_fn=<IndexBackward0>)
+ s4 negative :  tensor([-0.0589, -0.0803], grad_fn=<NegBackward0>)
+ s5 log  tensor([2.8317, 2.5224], grad_fn=<NegBackward0>)
+loss tensor(2.6770, grad_fn=<NegBackward0>)
+```
+
+`xs.data` after step 2
+
+```
+tensor([[ 0.2368,  2.0518, -0.2185,  0.4652, -0.4346,  1.0579,  1.6426, -0.7855,
+         -0.0980,  0.4123],
+        [-0.5562, -0.8487, -1.9150, -1.9256, -0.2362, -0.3040,  0.7241,  0.7428,
+          0.2581, -0.4694]])
+```
+
+<b>Step 3</b>
+
+![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/26cef26c6e4d2e3f3f72c6c37814e0843bdb8ae2/7%20-%20micrograd%20exercises/4%20-%20exercise%20number%207-4/graph_ce_step3.svg)
+
+```
+ raw  tensor([[ 0.2368,  2.0518, -0.2185,  0.4652, -0.4346,  1.0579,  1.6426, -0.7855,
+         -0.0980,  0.4123],
+        [-0.5562, -0.8487, -1.9150, -1.9256, -0.2362, -0.3040,  0.7241,  0.7428,
+          0.2581, -0.4694]], requires_grad=True)
+ exp  tensor([[1.2672, 7.7822, 0.8037, 1.5923, 0.6475, 2.8804, 5.1684, 0.4559, 0.9067,
+         1.5103],
+        [0.5734, 0.4280, 0.1473, 0.1458, 0.7896, 0.7379, 2.0628, 2.1018, 1.2944,
+         0.6254]], grad_fn=<ExpBackward0>)
+ sum  tensor(31.9211, grad_fn=<SumBackward0>)
+ sum(-1)  tensor([23.0147,  8.9064], grad_fn=<SumBackward1>)
+tensor([[23.0147],
+        [ 8.9064]], grad_fn=<UnsqueezeBackward0>)
+tensor([[0.0551, 0.3381, 0.0349, 0.0692, 0.0281, 0.1252, 0.2246, 0.0198, 0.0394,
+         0.0656],
+        [0.0644, 0.0481, 0.0165, 0.0164, 0.0887, 0.0828, 0.2316, 0.2360, 0.1453,
+         0.0702]], grad_fn=<DivBackward0>)
+input tensor([[0.0551, 0.3381, 0.0349, 0.0692, 0.0281, 0.1252, 0.2246, 0.0198, 0.0394,
+         0.0656],
+        [0.0644, 0.0481, 0.0165, 0.0164, 0.0887, 0.0828, 0.2316, 0.2360, 0.1453,
+         0.0702]], grad_fn=<DivBackward0>)
+target tensor([9, 4])
+range(0, 2)
+2
+ s3  tensor([0.0656, 0.0887], grad_fn=<IndexBackward0>)
+ s4 negative :  tensor([-0.0656, -0.0887], grad_fn=<NegBackward0>)
+ s5 log  tensor([2.7238, 2.4230], grad_fn=<NegBackward0>)
+loss tensor(2.5734, grad_fn=<NegBackward0>)
+```
+
+`xs.data`
+
+```
+tensor([[ 0.2313,  2.0180, -0.2220,  0.4583, -0.4374,  1.0454,  1.6201, -0.7875,
+         -0.1019,  0.5058],
+        [-0.5626, -0.8535, -1.9167, -1.9272, -0.1450, -0.3123,  0.7009,  0.7192,
+          0.2435, -0.4764]])
+```
+
+<h4>Summary</h4>
+Yeah, after step 3 ( for cross entropy ), we can already see differences between `n1` and `n1a`, or between `m1` and `m1a`. After step 2, these aren't visible yet. This is likely due to numerical precision or perhaps a typos, but that’s not the main point. The goal is to understand how to interpret this and whether it’s actually useful, or how to use it correctly for analysis.
+<br /><br />
+// 22-10-2026
