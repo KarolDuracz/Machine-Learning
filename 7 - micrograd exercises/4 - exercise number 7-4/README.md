@@ -249,7 +249,20 @@ tensor([[ 0.2313,  2.0180, -0.2220,  0.4583, -0.4374,  1.0454,  1.6201, -0.7875,
           0.2435, -0.4764]])
 ```
 
+<b>extra Step 4 - only graph</b> - Look at `0.2313` between `n1` and `n1a`
+
+![dump](https://raw.githubusercontent.com/KarolDuracz/Machine-Learning/7fb59ce67f2139cc98806fef94a6ad69b3ac457d/7%20-%20micrograd%20exercises/4%20-%20exercise%20number%207-4/graph_ce_step4.svg)
+
 <h4>Summary</h4>
-Yeah, after step 3 ( for cross entropy ), we can already see differences between `n1` and `n1a`, or between `m1` and `m1a`. After step 2, these aren't visible yet. This is likely due to numerical precision or perhaps a typos, but that’s not the main point. The goal is to understand how to interpret this and whether it’s actually useful, or how to use it correctly for analysis.
+
+Okay, let’s trace the CrossEntropy version again. After step 1, the log shows `raw tensor([[ 0.2477, 2.1216,...` at the top these are the values ​​for `n1` and `n2`. Further down, we see `xs.data is now in [30]!`, which contains the subsequent values the ones appearing between `n1` and `n1a` in the micrograd graph: `tensor([[ 0.2423, 2.0864,`. Now for STEP 2: in `raw tensor([[ 0.2423, 2.0864`, we can see the value at index 0 is `0.2423`. Then comes `xs.data after step 2`, followed by `tensor([[ 0.2368, 2.0518, -0.2185,...`. Indeed, on the graph after step 3 where there are two columns between `n1` and `n1a` we can see these two values to the right of `n1`, there is `0.2423`, followed by `0.2368`, and then `n1a` with a value of `1.2672`.
+<br /><br />
+An additional graph after step 4, as we can see above in `xs.data`, the value `0.2313` should appear.
+<br /><br />
+
+![dump](https://github.com/KarolDuracz/Machine-Learning/blob/main/7%20-%20micrograd%20exercises/4%20-%20exercise%20number%207-4/step4_lookat.png?raw=true)
+
+<br />
+The goal is to understand how to interpret this and whether it’s actually useful, or how to use it correctly for analysis.
 <br /><br />
 // 22-10-2026
