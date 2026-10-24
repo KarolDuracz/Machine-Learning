@@ -1,3 +1,8 @@
+ <br /> <br />
+Here is a list of exercises https://www.cs.toronto.edu/~hinton/coursera_lectures.html <br />
+https://www.cs.toronto.edu/~hinton/
+<hr>
+<br /><br />
 Geoffrey Hinton's lectures. 
 <br /><br />
 1. Blitz Kim channel ( https://www.youtube.com/@blitzkim4319 ) -> Lecture 9C : Using noise as a regularizer
