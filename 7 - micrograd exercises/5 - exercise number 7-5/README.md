@@ -12,6 +12,6 @@ unable to learn much in terms of these "features" as it lacks a sufficient numbe
 And so on... Stuff like that. So the question is: what exactly does a transformer learn, and what kind of "feature extraction" is performed by its layers? 
 Is there any way to verify this?
 <br /><br />
-But that’s all for now. An initial idea worth returning to. WHY DO I EVEN THINK THIS? Lately, the term "scaling" has been coming up in the context of these chatbots, LLMs, and so on. And, in truth, it made sense—looking at the 
-initial tests of models with 124M, 774M, 1.5B parameters, and so on. The charts showed that there was potential and that it was worth making the models larger. But...
+But that’s all for now. An initial idea worth returning to. WHY DO I EVEN THINK THIS? Lately, the term "scaling" has been coming up in the context of these chatbots, LLMs, and so on. And, in truth, it made sense looking at the 
+initial tests of models with 124M, 774M, 1.5B parameters, and so on. The charts showed that there was potential and that it was worth making the models larger. To add more parameters. But...
 <br /><br />
