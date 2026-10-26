@@ -8,3 +8,4 @@
 <br /><br />
 <b>4 - exercise number 7-4 </b> - A few notes on exercise 7-3. I’ll take a closer look at how the graphs are generated and how to interpret them correctly.
 <br /><br />
+<b>5 - exercise number 7-5 </b> - About "feature extraction". 
