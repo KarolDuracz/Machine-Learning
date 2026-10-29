@@ -1,12 +1,14 @@
-<h4>Demop 1 - Warmup</h4>
+<h4>Demo 1 - Warmup</h4>
 
-File ` Untitled - 29-10-2026 - 7-5 ex warmup.ipynb ` . For now I won’t go into more detail  why I included this specific code. The most important part begins in listings [36]–[52], where I encounter a simple problem, using an MSE (Mean Squared Error) function, the parameters are adjusted to improve (minimize) the loss value. This is illustrated in [46], where the output `xs` is shown to be virtually identical to the `targets`. Moving on to listings [53]–[60], starting at [53] marked with the comment `# more complex NN model` we see a "model" that produces 10 values ​​for each prediction (a 10 element vector for every input). There are three such inputs. The process remains the same, in listing [59], we generate predictions using `.multinomial`. The `multinomial` function works by taking the values ​​and generating samples based on their relative frequencies (with higher values ​​having a higher probability of being sampled). You could observe this, for instance, by generating a larger number of samples let's say 100 and analyzing the resulting distribution plot. But that is a topic for another time.
+File ` Untitled - 29-10-2026 - 7-5 ex warmup.ipynb ` . For now I won’t go into more detail  why I included this specific code. The most important part begins in listings [36]–[52], where I encounter a simple problem, using an MSE (Mean Squared Error) function, the parameters are adjusted to improve (minimize) the loss value. This is illustrated in [46], where the output `xs` is shown to be virtually identical to the `targets`. Moving on to listings [53]–[60], starting at [53] marked with the comment `# more complex NN model` we see a "model" that produces 10 values ​​for each index (let's say token) (a 10 element vector for every input). There are three such inputs. The process remains the same, in listing [59], we generate predictions using `.multinomial`. The `multinomial` function works by taking the values ​​and generating samples based on their relative frequencies (with higher values ​​having a higher probability of being sampled). You could observe this, for instance, by generating a larger number of samples let's say 100 and analyzing the resulting distribution plot. But that is a topic for another time.
 <br /><br />
 <b>What is crucial to understand is that a neural network requires a problem defined by a mathematical equation. We need to define the problem.</b> Then the network will find a solution
 <br /><br />
-Let me return for a moment to Andrej’s YouTube videos. If you listen closely to what he says—specifically his suggestion to "try to find a lower loss"—why is this so significant, for instance in an MLP model used for predicting the next letter or token? Because if we continue with this exercise (warmup), we will come to understand that WITHOUT IT, THE NETWORK WILL NOT PROPERLY LEARN THE DATA PROPERLY and will end up generating GARBAGE!
+Let me return for a moment to Andrej’s YouTube videos. If you listen closely to what he says specifically his suggestion to "try to find a lower loss" why is this so significant, for instance in an MLP model used for predicting the next letter or token? Because if we continue with this exercise (warmup), we will come to understand that WITHOUT IT, THE NETWORK WILL NOT PROPERLY LEARN THE DATA PROPERLY and will end up generating GARBAGE!
 <br /><br />
-That's for now.
+In other words, we can construct various functions and measure loss, but without a defined problem, this serves no useful purpose.
+<br /><br />
+That's all for now.
 <hr>
 <br /><br /><br />
 // TODO - 26-10-2026
