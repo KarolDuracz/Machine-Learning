@@ -8,6 +8,8 @@ Let me return for a moment to Andrej’s YouTube videos. If we listen closely to
 <br /><br />
 In other words, we can construct various functions and measure loss, but without a defined problem, this serves no useful purpose.
 <br /><br />
+<i>One more thing. What is shown in listing [27] describes a type of "compute unit" that has 1 input value, an activation function, and 1 output. Listing [37] describes the same "neuron," but with 3 inputs, an activation function, and 3 outputs. In [54], there are 10 weights, one for each input, activation function and 3 outputs. </i>  Photo for comparison https://upload.wikimedia.org/wikipedia/commons/8/8c/Perceptron_moj.png?utm_source=pl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled
+<br /><br />
 That's all for now.
 <hr>
 <br /><br /><br />
