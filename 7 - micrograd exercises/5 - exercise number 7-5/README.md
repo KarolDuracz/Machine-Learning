@@ -4,7 +4,7 @@ File ` Untitled - 29-10-2026 - 7-5 ex warmup.ipynb ` . For now I won’t go into
 <br /><br />
 <b>What is crucial to understand is that a neural network requires a problem defined by a mathematical equation. We need to define the problem.</b> Then the network will find a solution
 <br /><br />
-Let me return for a moment to Andrej’s YouTube videos. If you listen closely to what he says specifically his suggestion to "try to find a lower loss" why is this so significant, for instance in an MLP model used for predicting the next letter or token? Because if we continue with this exercise (warmup), we will come to understand that WITHOUT IT, THE NETWORK WILL NOT PROPERLY LEARN THE DATA PROPERLY and will end up generating GARBAGE!
+Let me return for a moment to Andrej’s YouTube videos. If we listen closely to what he says specifically his suggestion to "try to find a lower loss" why is this so significant, for instance in an MLP model used for predicting the next letter or token? Because if we continue with this exercise (warmup), we will come to understand that WITHOUT IT, THE NETWORK WILL NOT PROPERLY LEARN THE DATA and will end up generating GARBAGE!
 <br /><br />
 In other words, we can construct various functions and measure loss, but without a defined problem, this serves no useful purpose.
 <br /><br />
