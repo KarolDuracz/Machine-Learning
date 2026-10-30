@@ -10,7 +10,11 @@ In other words, we can construct various functions and measure loss, but without
 <br /><br />
 <i>One more thing. What is shown in listing [27] describes a type of "compute unit" that has 1 input value, an activation function, and 1 output. Listing [37] describes the same "neuron," but with 3 inputs, an activation function, and 3 outputs. In [54], there are 10 weights, one for each input, activation function and 3 outputs. </i>  Photo for comparison https://upload.wikimedia.org/wikipedia/commons/8/8c/Perceptron_moj.png?utm_source=pl.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled
 <br /><br />
+<i>I refer to Andrej’s YouTube recordings, and suggest looking through the initial exercises on building an MLP from scratch https://www.youtube.com/@AndrejKarpathy/videos . To the backprop ninja video. So, when I wrote about "finishing" this "warmup" above on demo 1, I mean building something that functions like `makemore` using simple names or something like tiny Shakespeare. That’s not my actual goal, though I’ve already gone through those exercises. Just something to keep in mind. I’m just writing this in case someone is here for the first time and doesn’t know this. I’ve already built simple models using names.txt as exercises, so I’m aware of that. I’m already looking into larger models and networks, and data.</i>
+<br /><br />
 That's all for now.
+<br /><br />
+// 30-10-2026
 <hr>
 <br /><br /><br />
 // TODO - 26-10-2026
