@@ -10,5 +10,6 @@
 <br /><br />
 <b>5 - exercise number 7-5 </b> - About "feature extraction". <i>TODO</i>
 <br />
-// 07-11-2026 - I'll leave this topic for now. I started thinking about it. When you remember what Mr. Geoffrey Hinton says, that subsequent layers learn more complex structures... You wonder how it works... Definitely. This topic It's deep and intensive. MLP architecture for comparison. Does the second linear layer learn the context or does it continue to calculate the prediction error for a single word? So this is about learning data structure, somehow, I guess. And now I have no idea how to deal with it to find out something. TODO. (...) Anyway. The LeNet and MNIST problem demonstrates that a network can learn complex structures in this way.
+// 07-11-2026 - I'll leave this topic for now. I started thinking about it. When you remember what Mr. Geoffrey Hinton says, that subsequent layers learn more complex structures... You wonder how it works... Definitely. This topic It's deep and intensive topic. MLP architecture for comparison. Does the second linear layer learn the context or does it continue to calculate the prediction error for a single word? So this is about learning data structure, somehow, I guess. And now I have no idea how to deal with it to find out something. TODO. (...) Anyway. The LeNet and MNIST problem demonstrates that a network can learn complex structures in this way. <br /><b>References:</b> https://stanford.edu/~jlmcc/papers/PDP/Volume%201/Chap8_PDP86.pdf - Learning Internal Representations by Error Propagation.
+
 <br /><br />
