@@ -1,7 +1,5 @@
 > [!NOTE]
 > For informational purpose only
-
- <br /><br />
 <h3>Publications</h3>
 https://github.com/manjunath5496/Geoffrey-E-Hinton-Publications/blob/main/README.md - a list of interesting ideas.
  <br /> <br /><br />
