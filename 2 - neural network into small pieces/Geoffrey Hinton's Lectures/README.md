@@ -1,4 +1,11 @@
- <br /> <br />
+> [!NOTE]
+> For informational purpose only
+
+ <br /><br />
+<h3>Publications</h3>
+https://github.com/manjunath5496/Geoffrey-E-Hinton-Publications/blob/main/README.md - a list of interesting ideas.
+ <br /> <br /><br />
+<h3>Video Lectures</h3>
 Here is a list of exercises https://www.cs.toronto.edu/~hinton/coursera_lectures.html <br />
 https://www.cs.toronto.edu/~hinton/
 <hr>
