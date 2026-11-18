@@ -22,3 +22,14 @@ And this is precisely where the file `Untitled1 - 18-11-2026 - ex_6-1.ipynb` beg
 <h4>Summary </h4>
 
 Okay, this is naive and weak, but exercise ` 6-1 ` is just there to provide a starting point. 
+
+<h4>Multiple nodes</h4>
+
+
+Do not take this graph seriously. It likely comes from the MLP at the end of this exercise, which has no activation function, and it’s based on 50 steps of the training loop. https://github.com/karpathy/nn-zero-to-hero/blob/master/lectures/makemore/makemore_part1_bigrams.ipynb . It's just an example plot.
+
+![dump](https://github.com/KarolDuracz/Machine-Learning/blob/main/6%20-%20micrograd%20exercises/1%20-%20exercise%20number%206-1/loss_example_before_mean_or_sum.png?raw=true)
+
+So, for many loss values, those fed into (let's say) CrossEntropy the individual values BEFORE the `.mean()` operation is applied look something like this. This is just an example. That is why the `.mean()` operation aggregates them together in a certain way.
+<br /><br />
+TODO
