@@ -34,7 +34,7 @@ So, for many loss values, those fed into (let's say) CrossEntropy the individual
 <br /><br />
 TODO
 <br /><br />
-<h4>Update - In generally, it doesn't matter, but it’s good to have all the files.</h4>
+<h4>Update - Generally, it doesn't matter, but it’s good to have all the files in one place.</h4>
 
 File `Untitled2 - 18-11-2026 - ex6-1 - multiple losses.ipynb` . I found the code that collected these loss values ​​over time and created this plot. Unfortunately, I don’t remember the specific test I don’t have a record of it, so I cannot generate the exact same plot as the one shown above. As you can see, I tested with multiple layers and the addition of parameters, take a look at `#params = {W1, W2, W3, W4}`. But I don't remember this exercise. However. In listing [11], there is the initialization. In [14], the training loop. In [17], a plot. Now, note that this is for a single word, look at the beginning of [11]: `for w in words[:1]:` it processes only one word. You can gradually increase this to 2, 3, and so on. Furthermore, what I mentioned above is covered at the end, from [21] to [23]. Specifically, the `loss` and `torch.tensor(arr_losses)[-1].mean()` values ​​are identical. In other words, this represents the plot both BEFORE AND AFTER applying `.mean()`.
 <br /><br />
